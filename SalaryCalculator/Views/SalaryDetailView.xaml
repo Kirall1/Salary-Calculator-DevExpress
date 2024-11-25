@@ -1,0 +1,66 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:i="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    x:Class="SalaryCalculator.Views.SalaryDetailView">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <dxg:GridControl Grid.Row="0" ItemsSource="{Binding SalaryDetails}" SelectedItem="{Binding SelectedSalaryDetail}">
+            <dxg:GridControl.View>
+                <dxg:TableView AutoWidth="True"/>
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="Performer" Header="Исполнители" />
+            <dxg:GridColumn FieldName="RankCoefficient.Rank" Header="Разряд">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings ItemsSource="{Binding RankCoefficients}" 
+                                      DisplayMember="Rank" 
+                                      ValueMember="Id"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn FieldName="RankCoefficient.Coefficient" Header="Тарифный коэффициент" />
+            <dxg:GridColumn FieldName="MonthlyBaseRate" Header="Месячная базовая ставка, руб." />
+            <dxg:GridColumn FieldName="HourBaseRate" Header="Часовая базовая ставка, руб." />
+            <dxg:GridColumn FieldName="HoursOfWorkPerDay" Header="Количество часов работы в день, ч." />
+            <dxg:GridColumn FieldName="EffectiveWorkingTimeFund" Header="Эффективный фонд рабочего времени, дн." />
+            <dxg:GridColumn FieldName="PremiumCoefficient" Header="Коэффициент премий" />
+            <dxg:GridColumn FieldName="Salary" Header="Заработная плата, руб." />
+        </dxg:GridControl>
+
+        <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Исполнитель:" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding SelectedSalaryDetail.Performer}" Width="200"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Разряд:" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding SelectedSalaryDetail.RankCoefficient.Rank}" Width="200" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Эффективный фонд рабочего времени:" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding SelectedSalaryDetail.EffectiveWorkingTimeFund}" Width="200"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Количество часов работы:" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding SelectedSalaryDetail.HoursOfWorkPerDay}" Width="200"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Добавить" Command="{Binding AddCommand}" Width="100" Margin="5"/>
+                <Button Content="Обновить" Command="{Binding UpdateCommand}" Width="100" Margin="5"/>
+                <Button Content="Удалить" Command="{Binding DeleteCommand}" Width="100" Margin="5"/>
+                <Button Content="Сохранить" Command="{Binding SaveCommand}" Width="100" Margin="5"/>
+                <Button Content="Загрузить" Command="{Binding LoadDataCommand}" Width="100" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

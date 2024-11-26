@@ -6,6 +6,7 @@ namespace SalaryCalculator.Data
 {
     public static class DbInitializer
     {
+        //Initialize Db if both tables are empty
         public static void Initialize(DatabaseContext context)
         {
             context.Database.EnsureCreated();

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SalaryCalculator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+52c5c4384920b6ca847245abd479b31db93b34a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca51c6cbd1ca8de99c8e2d2525a853861a13024b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SalaryCalculator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SalaryCalculator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -181,6 +181,20 @@
           }
         }
       },
+      "DevExpress.Wpf.LayoutControl/24.1.7": {
+        "dependencies": {
+          "DevExpress.Data": "24.1.7",
+          "DevExpress.Data.Desktop": "24.1.7",
+          "DevExpress.Mvvm": "24.1.7",
+          "DevExpress.Wpf.Core": "24.1.7"
+        },
+        "runtime": {
+          "lib/net6.0-windows/DevExpress.Xpf.LayoutControl.v24.1.dll": {
+            "assemblyVersion": "24.1.7.0",
+            "fileVersion": "24.1.7.0"
+          }
+        }
+      },
       "DevExpress.Wpf.Themes.Office2019Colorful/24.1.7": {
         "runtime": {
           "lib/net6.0-windows/DevExpress.Xpf.Themes.Office2019Colorful.v24.1.dll": {
@@ -1360,6 +1374,13 @@
       "sha512": "sha512-xZ1U30vsZzSSrbQgXz7Y70xWtyLyLfauE3DsPkcEL0+CgDYY9nevg3ydM9HRkZICLinjyuS0uOWuo2gfTmGAsA==",
       "path": "devexpress.wpf.grid.core/24.1.7",
       "hashPath": "devexpress.wpf.grid.core.24.1.7.nupkg.sha512"
+    },
+    "DevExpress.Wpf.LayoutControl/24.1.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-gj8T37/RkmmRYDih15rXghUidkfy+Wey7AjEpTAkJ8ZrKKK5rSryh5nsJfbd1dat1Ggzi0DCPPY6GckBN/vPfQ==",
+      "path": "devexpress.wpf.layoutcontrol/24.1.7",
+      "hashPath": "devexpress.wpf.layoutcontrol.24.1.7.nupkg.sha512"
     },
     "DevExpress.Wpf.Themes.Office2019Colorful/24.1.7": {
       "type": "package",

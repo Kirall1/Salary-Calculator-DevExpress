@@ -4,14 +4,14 @@ namespace SalaryCalculator.Models
 {
     public class SalaryDetail : BaseModel
     {
-        public string Performer { get; set; }
-        public virtual RankCoefficient RankCoefficient { get; set; }
-        public decimal MonthlyBaseRate { get; set; }
-        public decimal HourBaseRate { get; set; }
-        public int HoursOfWorkPerDay {  get; set; }
-        public int EffectiveWorkingTimeFund { get; set; }
-        public decimal PremiumCoefficient { get; set; } = 1.2M;
-        public decimal Salary { get; set; }
+        public string Performer { get; set; } //Испольнитель
+        public virtual RankCoefficient RankCoefficient { get; set; } //Разряд и коэффициент
+        public decimal MonthlyBaseRate { get; set; } //Месячная базова ставка
+        public decimal HourBaseRate { get; set; } // Часовая базавая ставка
+        public int HoursOfWorkPerDay {  get; set; } //Количество часов работы в день
+        public int EffectiveWorkingTimeFund { get; set; } //Эффективный фонд рабочего времени
+        public decimal PremiumCoefficient { get; set; } = 1.2M; //Коэффициент премирования 
+        public decimal Salary { get; set; } //Зарплата
 
         private void CalculateMonthlyBaseRate()
         {

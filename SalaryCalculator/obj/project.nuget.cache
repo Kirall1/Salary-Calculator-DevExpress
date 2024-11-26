@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "SgfPTAHOQgk=",
+  "dgSpecHash": "qIGM8u0/Y2s=",
   "success": true,
   "projectFilePath": "C:\\Work\\SalaryCalculator\\SalaryCalculator\\SalaryCalculator.csproj",
   "expectedPackageFiles": [
@@ -17,6 +17,7 @@
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.wpf.core\\24.1.7\\devexpress.wpf.core.24.1.7.nupkg.sha512",
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.wpf.docking\\24.1.7\\devexpress.wpf.docking.24.1.7.nupkg.sha512",
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.wpf.grid.core\\24.1.7\\devexpress.wpf.grid.core.24.1.7.nupkg.sha512",
+    "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.wpf.layoutcontrol\\24.1.7\\devexpress.wpf.layoutcontrol.24.1.7.nupkg.sha512",
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.wpf.themes.office2019colorful\\24.1.7\\devexpress.wpf.themes.office2019colorful.24.1.7.nupkg.sha512",
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.wpf.themeslw\\24.1.7\\devexpress.wpf.themeslw.24.1.7.nupkg.sha512",
     "C:\\Users\\Kir\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

@@ -7,6 +7,7 @@ using DevExpress.XtraPrinting.Native.Extensions;
 using SalaryCalculator.ViewModels.Base;
 using System.Windows.Input;
 using DevExpress.Mvvm.Xpf;
+using System.Windows.Forms;
 
 namespace SalaryCalculator.ViewModels
 {
@@ -35,11 +36,17 @@ namespace SalaryCalculator.ViewModels
             get => _selectedSalaryDetail; 
             set 
             {
-                if(_selectedSalaryDetail == null) _selectedSalaryDetail = new SalaryDetail();
                 Set(ref _selectedSalaryDetail, value);
+                InitializeEditableSalaryDetail();
             }
         }
 
+        private SalaryDetail _editableSalaryDetail;
+        public SalaryDetail EditableSalaryDetail
+        {
+            get => _editableSalaryDetail;
+            set => Set(ref _editableSalaryDetail, value);
+        }
 
 
         public ICommand LoadDataCommand { get; }
@@ -47,7 +54,9 @@ namespace SalaryCalculator.ViewModels
         public ICommand UpdateCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand<RowValidationArgs> UpdateRowCommand { get; }
+        public ICommand<InvalidRowExceptionArgs> InvalidRowCommand { get; }
 
+        #region constructor
         public SalaryDetailViewModel(ISalaryDetailRepository salaryDetailRepository, IRankCoefficientRepository rankCoefficientRepository)
         {
             _salaryDetailRepository = salaryDetailRepository;
@@ -63,38 +72,65 @@ namespace SalaryCalculator.ViewModels
             _rankCoefficients = new ObservableCollection<RankCoefficient>(_rankCoefficientRepository.GetAllAsync().Await());
             LoadDataAsync().Await();
         }
-
+        #endregion
+        //Loading data from DB
         private async Task LoadDataAsync()
         {
             SalaryDetails = new ObservableCollection<SalaryDetail>(await _salaryDetailRepository.GetAllAsync());
         }
 
+        //Adding SalaryDetail through input fields
         private void AddSalaryDetail()
         {
-            if (SelectedSalaryDetail == null) return;
+            if (EditableSalaryDetail == null) return;
             var newDetail = new SalaryDetail()
             {
-                Performer = SelectedSalaryDetail.Performer,
-                RankCoefficient = SelectedSalaryDetail.RankCoefficient,
-                HoursOfWorkPerDay = SelectedSalaryDetail.HoursOfWorkPerDay,
-                EffectiveWorkingTimeFund = SelectedSalaryDetail.EffectiveWorkingTimeFund
+                Performer = EditableSalaryDetail.Performer,
+                RankCoefficient = EditableSalaryDetail.RankCoefficient,
+                HoursOfWorkPerDay = EditableSalaryDetail.HoursOfWorkPerDay,
+                EffectiveWorkingTimeFund = EditableSalaryDetail.EffectiveWorkingTimeFund
             };
             newDetail.RecalculateAll();
             SelectedSalaryDetail = newDetail;
-            SalaryDetails.Add(newDetail);
             _salaryDetailRepository.AddAsync(newDetail);
+            LoadDataAsync().Await();
         }
 
+        //Editng SalaryDetail through input fields
         private void UpdateSalaryDetail()
         {
-            if (SelectedSalaryDetail != null)
+            if (SelectedSalaryDetail != null && EditableSalaryDetail != null)
             {
-                SelectedSalaryDetail.RankCoefficient = _rankCoefficientRepository.GetByIdAsync(SelectedSalaryDetail.RankCoefficient.Id).Await();
+                SelectedSalaryDetail.Performer = EditableSalaryDetail.Performer;
+                SelectedSalaryDetail.RankCoefficient = EditableSalaryDetail.RankCoefficient;
+                SelectedSalaryDetail.EffectiveWorkingTimeFund = EditableSalaryDetail.EffectiveWorkingTimeFund;
+                SelectedSalaryDetail.HoursOfWorkPerDay = EditableSalaryDetail.HoursOfWorkPerDay;
+
                 SelectedSalaryDetail.RecalculateAll();
                 _salaryDetailRepository.Update(SelectedSalaryDetail);
+                LoadDataAsync().Await();
             }
         }
 
+        private void InitializeEditableSalaryDetail()
+        {
+            if (SelectedSalaryDetail != null)
+            {
+                EditableSalaryDetail = new SalaryDetail
+                {
+                    Performer = SelectedSalaryDetail.Performer,
+                    RankCoefficient = SelectedSalaryDetail.RankCoefficient,
+                    MonthlyBaseRate = SelectedSalaryDetail.MonthlyBaseRate,
+                    HourBaseRate = SelectedSalaryDetail.HourBaseRate,
+                    HoursOfWorkPerDay = SelectedSalaryDetail.HoursOfWorkPerDay,
+                    EffectiveWorkingTimeFund = SelectedSalaryDetail.EffectiveWorkingTimeFund,
+                    PremiumCoefficient = SelectedSalaryDetail.PremiumCoefficient,
+                    Salary = SelectedSalaryDetail.Salary
+                };
+            }
+        }
+
+        //Editng and adding SalaryDetail through grid
         private void UpdateSalaryDetailByRow(RowValidationArgs args)
         {
             if (args.Item == null) return;
@@ -110,15 +146,24 @@ namespace SalaryCalculator.ViewModels
             {
                 _salaryDetailRepository.Update(item);
             }
+            LoadDataAsync().Await();
         }
 
-
+        //Delete the selected line.
         private void DeleteSalaryDetail()
         {
             if (SelectedSalaryDetail != null)
             {
+                var confirmationResult = MessageBox.Show(
+                    "Вы действительно хотите удалить эту запись?",
+                    "Подтверждение удаления",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+                if (confirmationResult == DialogResult.No)
+                    return;
                 _salaryDetailRepository.Delete(SelectedSalaryDetail);
                 SalaryDetails.Remove(SelectedSalaryDetail);
+                LoadDataAsync().Await();
             }
         }
     }

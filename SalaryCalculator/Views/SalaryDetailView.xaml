@@ -4,6 +4,7 @@
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:i="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+     xmlns:dxd="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     x:Class="SalaryCalculator.Views.SalaryDetailView">
 
     <Grid>
@@ -16,21 +17,31 @@
         <dxg:GridControl Grid.Row="0" ItemsSource="{Binding SalaryDetails}" SelectedItem="{Binding SelectedSalaryDetail}">
             <dxg:GridControl.View>
                 <dxg:TableView AutoWidth="True"
-                       ShowUpdateRowButtons="OnCellEditorOpen"
-                       NewItemRowPosition="Bottom"
-                       ValidateRowCommand="{Binding UpdateRowCommand}"/>
+                               ShowUpdateRowButtons="OnCellEditorOpen"
+                               NewItemRowPosition="Bottom"
+                               ValidateRowCommand="{Binding UpdateRowCommand}"
+                               InvalidRowExceptionCommand="{Binding InvalidRowCommand}"/>
             </dxg:GridControl.View>
 
-            <dxg:GridColumn FieldName="Performer" Header="Исполнители" />
+            <dxg:GridColumn FieldName="Performer" 
+                            Header="Исполнители" 
+                            Validate="PerformerValidate"/>
 
             <dxg:GridColumn Binding="{Binding RankCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Разряд">
                 <dxg:GridColumn.EditSettings>
-                    <dxe:ComboBoxEditSettings ItemsSource="{Binding RankCoefficients}" DisplayMember="Rank"/>
+                    <dxe:ComboBoxEditSettings ItemsSource="{Binding RankCoefficients}" 
+                                              DisplayMember="Rank"
+                                              IsTextEditable="False"/>
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="HoursOfWorkPerDay" Header="Количество часов работы в день, ч." />
-            <dxg:GridColumn FieldName="EffectiveWorkingTimeFund" Header="Эффективный фонд рабочего времени, дн." />
+            <dxg:GridColumn FieldName="HoursOfWorkPerDay" 
+                            Header="Количество часов работы в день, ч."
+                            Validate="HoursOfWorkPerDayValidate"/>
+            
+            <dxg:GridColumn FieldName="EffectiveWorkingTimeFund" 
+                            Header="Эффективный фонд рабочего времени, дн."
+                            Validate="EffectiveWorkingTimeFundValidate"/>
 
             <dxg:GridColumn Binding="{Binding RankCoefficient.Coefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Тарифный коэффициент"
                     AllowEditing="False">
@@ -96,26 +107,37 @@
         <StackPanel Grid.Row="1" Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <TextBlock Text="Исполнитель:" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding SelectedSalaryDetail.Performer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="200"/>
+                <dxe:TextEdit Text="{Binding EditableSalaryDetail.Performer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                         Width="200"
+                         ValidateOnTextInput="False"
+                         Validate="PerformerValidate"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <TextBlock Text="Разряд:" Margin="0,0,5,0" VerticalAlignment="Center"/>
                 <ComboBox ItemsSource="{Binding RankCoefficients}"
-                          SelectedItem="{Binding SelectedSalaryDetail.RankCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          SelectedItem="{Binding EditableSalaryDetail.RankCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                           DisplayMemberPath="Rank"
-                          Width="200"/>
+                          Width="200"
+                          IsEditable="False"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <TextBlock Text="Эффективный фонд рабочего времени:" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding SelectedSalaryDetail.EffectiveWorkingTimeFund, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="200"/>
+                <dxe:TextEdit Text="{Binding EditableSalaryDetail.EffectiveWorkingTimeFund, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                              Width="200"
+                              ValidateOnTextInput="False"
+                              Validate="EffectiveWorkingTimeFundValidate"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                 <TextBlock Text="Количество часов работы:" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding SelectedSalaryDetail.HoursOfWorkPerDay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="200"/>
+                <dxe:TextEdit Text="{Binding EditableSalaryDetail.HoursOfWorkPerDay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                              Width="200"
+                              ValidateOnTextInput="False"
+                              Validate="HoursOfWorkPerDayValidate"/>
             </StackPanel>
+            
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Добавить" Command="{Binding AddCommand}" Width="100" Margin="5"/>

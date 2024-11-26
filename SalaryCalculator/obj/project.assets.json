@@ -244,6 +244,25 @@
           }
         }
       },
+      "DevExpress.Wpf.LayoutControl/24.1.7": {
+        "type": "package",
+        "dependencies": {
+          "DevExpress.Data": "[24.1.7]",
+          "DevExpress.Data.Desktop": "[24.1.7]",
+          "DevExpress.Mvvm": "[24.1.7]",
+          "DevExpress.Wpf.Core": "[24.1.7]"
+        },
+        "compile": {
+          "lib/net6.0-windows/DevExpress.Xpf.LayoutControl.v24.1.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0-windows/DevExpress.Xpf.LayoutControl.v24.1.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "DevExpress.Wpf.Themes.Office2019Colorful/24.1.7": {
         "type": "package",
         "compile": {
@@ -1965,6 +1984,28 @@
         "lib/net6.0-windows/DevExpress.Xpf.Grid.v24.1.Extensions.xml",
         "lib/net6.0-windows/DevExpress.Xpf.Grid.v24.1.dll",
         "lib/net6.0-windows/DevExpress.Xpf.Grid.v24.1.xml",
+        "tools/VisualStudioToolsManifest.xml"
+      ]
+    },
+    "DevExpress.Wpf.LayoutControl/24.1.7": {
+      "sha512": "gj8T37/RkmmRYDih15rXghUidkfy+Wey7AjEpTAkJ8ZrKKK5rSryh5nsJfbd1dat1Ggzi0DCPPY6GckBN/vPfQ==",
+      "type": "package",
+      "path": "devexpress.wpf.layoutcontrol/24.1.7",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "devexpress.wpf.layoutcontrol.24.1.7.nupkg.sha512",
+        "devexpress.wpf.layoutcontrol.nuspec",
+        "lib/net452/Design/DevExpress.Xpf.LayoutControl.v24.1.Design.dll",
+        "lib/net452/Design/DevExpress.Xpf.LayoutControl.v24.1.DesignTools.dll",
+        "lib/net452/Design/DevExpress.Xpf.LayoutControl.v24.1.DesignTools.v16.10.dll",
+        "lib/net452/DevExpress.Xpf.LayoutControl.v24.1.dll",
+        "lib/net452/DevExpress.Xpf.LayoutControl.v24.1.xml",
+        "lib/net6.0-windows/Design/DevExpress.Xpf.LayoutControl.v24.1.DesignTools.dll",
+        "lib/net6.0-windows/Design/DevExpress.Xpf.LayoutControl.v24.1.DesignTools.v16.10.dll",
+        "lib/net6.0-windows/DevExpress.Xpf.LayoutControl.v24.1.dll",
+        "lib/net6.0-windows/DevExpress.Xpf.LayoutControl.v24.1.xml",
         "tools/VisualStudioToolsManifest.xml"
       ]
     },
@@ -4384,7 +4425,8 @@
       "Microsoft.EntityFrameworkCore.Proxies >= 9.0.0",
       "Microsoft.EntityFrameworkCore.Sqlite >= 9.0.0",
       "devexpress.wpf.docking >= 24.1.7",
-      "devexpress.wpf.grid.core >= 24.1.7"
+      "devexpress.wpf.grid.core >= 24.1.7",
+      "devexpress.wpf.layoutcontrol >= 24.1.7"
     ]
   },
   "packageFolders": {
@@ -4481,6 +4523,10 @@
             "version": "[24.1.7, )"
           },
           "devexpress.wpf.grid.core": {
+            "target": "Package",
+            "version": "[24.1.7, )"
+          },
+          "devexpress.wpf.layoutcontrol": {
             "target": "Package",
             "version": "[24.1.7, )"
           }

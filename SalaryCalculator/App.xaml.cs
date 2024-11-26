@@ -1,6 +1,5 @@
 ﻿using DevExpress.Xpf.Core;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using SalaryCalculator.Data;
 using SalaryCalculator.ViewModels;
 using SalaryCalculator.Views;
@@ -9,7 +8,6 @@ using System;
 using System.Windows;
 using SalaryCalculator.Data.Repositories;
 using SalaryCalculator.Data.Repositories.Impl;
-using Microsoft.Extensions.Options;
 
 namespace SalaryCalculator
 {

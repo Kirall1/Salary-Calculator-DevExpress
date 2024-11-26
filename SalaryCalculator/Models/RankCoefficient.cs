@@ -4,8 +4,8 @@ namespace SalaryCalculator.Models
 {
     public class RankCoefficient : BaseModel
     {
-        public int Rank { get; set; }
-        public decimal Coefficient { get; set; }
+        public int Rank { get; set; } //Разряд
+        public decimal Coefficient { get; set; } //Коэффициент
         public virtual IEnumerable<SalaryDetail> Details { get; set; }
     }
 }

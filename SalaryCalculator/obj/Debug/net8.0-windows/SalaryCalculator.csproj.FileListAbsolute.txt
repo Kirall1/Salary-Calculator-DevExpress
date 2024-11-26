@@ -196,3 +196,4 @@ C:\Work\SalaryCalculator\SalaryCalculator\bin\Debug\net8.0-windows\DevExpress.Xp
 C:\Work\SalaryCalculator\SalaryCalculator\bin\Debug\net8.0-windows\DevExpress.Xpf.Layout.v24.1.Core.dll
 C:\Work\SalaryCalculator\SalaryCalculator\bin\Debug\net8.0-windows\Castle.Core.dll
 C:\Work\SalaryCalculator\SalaryCalculator\bin\Debug\net8.0-windows\Microsoft.EntityFrameworkCore.Proxies.dll
+C:\Work\SalaryCalculator\SalaryCalculator\bin\Debug\net8.0-windows\DevExpress.Xpf.LayoutControl.v24.1.dll

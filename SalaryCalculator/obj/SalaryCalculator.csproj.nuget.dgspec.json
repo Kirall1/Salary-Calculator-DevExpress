@@ -95,6 +95,10 @@
             "devexpress.wpf.grid.core": {
               "target": "Package",
               "version": "[24.1.7, )"
+            },
+            "devexpress.wpf.layoutcontrol": {
+              "target": "Package",
+              "version": "[24.1.7, )"
             }
           },
           "imports": [

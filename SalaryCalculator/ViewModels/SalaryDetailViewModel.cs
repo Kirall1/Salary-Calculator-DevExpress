@@ -62,15 +62,14 @@ namespace SalaryCalculator.ViewModels
             _salaryDetailRepository = salaryDetailRepository;
             _rankCoefficientRepository = rankCoefficientRepository;
 
-            SalaryDetails = new ObservableCollection<SalaryDetail>();
             LoadDataCommand = new AsyncCommand(LoadDataAsync);
-            AddCommand = new DelegateCommand(AddSalaryDetail);
-            UpdateCommand = new DelegateCommand(UpdateSalaryDetail);
-            DeleteCommand = new DelegateCommand(DeleteSalaryDetail);
-            UpdateRowCommand = new DelegateCommand<RowValidationArgs>(args => UpdateSalaryDetailByRow(args));
+            AddCommand = new AsyncCommand(AddSalaryDetail);
+            UpdateCommand = new AsyncCommand(UpdateSalaryDetail);
+            DeleteCommand = new AsyncCommand(DeleteSalaryDetail);
+            UpdateRowCommand = new AsyncCommand<RowValidationArgs>(args => UpdateSalaryDetailByRow(args));
 
+            _salaryDetails = new ObservableCollection<SalaryDetail>(_salaryDetailRepository.GetAllAsync().Await());
             _rankCoefficients = new ObservableCollection<RankCoefficient>(_rankCoefficientRepository.GetAllAsync().Await());
-            LoadDataAsync().Await();
         }
         #endregion
         //Loading data from DB
@@ -80,7 +79,7 @@ namespace SalaryCalculator.ViewModels
         }
 
         //Adding SalaryDetail through input fields
-        private void AddSalaryDetail()
+        private async Task AddSalaryDetail()
         {
             if (EditableSalaryDetail == null) return;
             var newDetail = new SalaryDetail()
@@ -92,12 +91,12 @@ namespace SalaryCalculator.ViewModels
             };
             newDetail.RecalculateAll();
             SelectedSalaryDetail = newDetail;
-            _salaryDetailRepository.AddAsync(newDetail);
-            LoadDataAsync().Await();
+            await _salaryDetailRepository.AddAsync(newDetail);
+            await LoadDataAsync();
         }
 
         //Editng SalaryDetail through input fields
-        private void UpdateSalaryDetail()
+        private async Task UpdateSalaryDetail()
         {
             if (SelectedSalaryDetail != null && EditableSalaryDetail != null)
             {
@@ -108,7 +107,7 @@ namespace SalaryCalculator.ViewModels
 
                 SelectedSalaryDetail.RecalculateAll();
                 _salaryDetailRepository.Update(SelectedSalaryDetail);
-                LoadDataAsync().Await();
+                await LoadDataAsync();
             }
         }
 
@@ -131,7 +130,7 @@ namespace SalaryCalculator.ViewModels
         }
 
         //Editng and adding SalaryDetail through grid
-        private void UpdateSalaryDetailByRow(RowValidationArgs args)
+        private async Task UpdateSalaryDetailByRow(RowValidationArgs args)
         {
             if (args.Item == null) return;
             var item = args.Item as SalaryDetail;
@@ -140,17 +139,17 @@ namespace SalaryCalculator.ViewModels
             SelectedSalaryDetail = item;
             if(args.IsNewItem)
             {
-                _salaryDetailRepository.AddAsync(item);
+                await _salaryDetailRepository.AddAsync(item);
             }
             else
             {
                 _salaryDetailRepository.Update(item);
             }
-            LoadDataAsync().Await();
+            await LoadDataAsync();
         }
 
         //Delete the selected line.
-        private void DeleteSalaryDetail()
+        private async Task DeleteSalaryDetail()
         {
             if (SelectedSalaryDetail != null)
             {
@@ -163,7 +162,7 @@ namespace SalaryCalculator.ViewModels
                     return;
                 _salaryDetailRepository.Delete(SelectedSalaryDetail);
                 SalaryDetails.Remove(SelectedSalaryDetail);
-                LoadDataAsync().Await();
+                await LoadDataAsync();
             }
         }
     }

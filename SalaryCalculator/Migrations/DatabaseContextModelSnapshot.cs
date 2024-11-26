@@ -43,8 +43,8 @@ namespace SalaryCalculator.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("EffectiveWorkingTimeFund")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("EffectiveWorkingTimeFund")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("HourBaseRate")
                         .HasColumnType("TEXT");

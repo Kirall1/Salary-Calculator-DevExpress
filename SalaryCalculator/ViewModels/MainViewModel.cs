@@ -1,9 +1,9 @@
-﻿using DevExpress.Mvvm;
+﻿using SalaryCalculator.ViewModels.Base;
 using SalaryCalculator.Views;
 
 namespace SalaryCalculator.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModel
     {
         public object CurrentView { get; set; }
 

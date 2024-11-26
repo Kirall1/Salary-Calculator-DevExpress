@@ -35,7 +35,7 @@ namespace SalaryCalculator.Migrations
                     MonthlyBaseRate = table.Column<decimal>(type: "TEXT", nullable: false),
                     HourBaseRate = table.Column<decimal>(type: "TEXT", nullable: false),
                     HoursOfWorkPerDay = table.Column<int>(type: "INTEGER", nullable: false),
-                    EffectiveWorkingTimeFund = table.Column<decimal>(type: "TEXT", nullable: false),
+                    EffectiveWorkingTimeFund = table.Column<int>(type: "INTEGER", nullable: false),
                     PremiumCoefficient = table.Column<decimal>(type: "TEXT", nullable: false),
                     Salary = table.Column<decimal>(type: "TEXT", nullable: false)
                 },

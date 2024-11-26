@@ -10,7 +10,7 @@ using SalaryCalculator.Data;
 namespace SalaryCalculator.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241125183923_Initial")]
+    [Migration("20241126133836_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -46,8 +46,8 @@ namespace SalaryCalculator.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("EffectiveWorkingTimeFund")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("EffectiveWorkingTimeFund")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("HourBaseRate")
                         .HasColumnType("TEXT");

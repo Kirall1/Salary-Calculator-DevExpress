@@ -1,4 +1,7 @@
-﻿using SalaryCalculator.ViewModels;
+﻿using DevExpress.Xpf.Grid;
+using SalaryCalculator.Models;
+using SalaryCalculator.ViewModels;
+using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
 namespace SalaryCalculator.Views

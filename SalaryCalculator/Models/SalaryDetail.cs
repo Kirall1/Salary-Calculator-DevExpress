@@ -9,7 +9,7 @@ namespace SalaryCalculator.Models
         public decimal MonthlyBaseRate { get; set; }
         public decimal HourBaseRate { get; set; }
         public int HoursOfWorkPerDay {  get; set; }
-        public decimal EffectiveWorkingTimeFund { get; set; }
+        public int EffectiveWorkingTimeFund { get; set; }
         public decimal PremiumCoefficient { get; set; } = 1.2M;
         public decimal Salary { get; set; }
 

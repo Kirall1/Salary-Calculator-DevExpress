@@ -5,10 +5,17 @@ namespace SalaryCalculator.Data
 {
     public class DatabaseContext : DbContext
     {
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
+        public DatabaseContext() { }
 
         public DbSet<SalaryDetail> SalaryDetails { get; set; }
 
         public DbSet<RankCoefficient> RankCoefficients { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=data.db")
+                          .UseLazyLoadingProxies();
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }

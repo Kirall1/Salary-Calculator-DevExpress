@@ -1,45 +1,52 @@
-﻿using DevExpress.Mvvm.CodeGenerators;
-using SalaryCalculator.Models;
+﻿using SalaryCalculator.Models;
 using SalaryCalculator.Data.Repositories;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using DevExpress.Mvvm;
-using System.Collections.Generic;
 using DevExpress.XtraPrinting.Native.Extensions;
+using SalaryCalculator.ViewModels.Base;
+using System.Windows.Input;
+using DevExpress.Mvvm.Xpf;
 
 namespace SalaryCalculator.ViewModels
 {
-    public class SalaryDetailViewModel : ViewModelBase
+    public class SalaryDetailViewModel : ViewModel
     {
         private readonly ISalaryDetailRepository _salaryDetailRepository;
         private readonly IRankCoefficientRepository _rankCoefficientRepository;
 
-        public ICollection<SalaryDetail> SalaryDetails 
+
+        private ObservableCollection<SalaryDetail> _salaryDetails;
+        public ObservableCollection<SalaryDetail> SalaryDetails 
         { 
-            get => GetValue<ICollection<SalaryDetail>>(); 
-            set => SetValue(value); 
+            get => _salaryDetails; 
+            set => Set(ref _salaryDetails, value); 
         }
 
-        public ICollection<RankCoefficient> RankCoefficients
+        private ObservableCollection<RankCoefficient> _rankCoefficients;
+        public ObservableCollection<RankCoefficient> RankCoefficients
         {
-            get => GetValue<ICollection<RankCoefficient>>();
-            set => SetValue(value);
+            get => _rankCoefficients;
         }
 
+        private SalaryDetail _selectedSalaryDetail;
         public SalaryDetail SelectedSalaryDetail 
         {
-            get => GetValue<SalaryDetail>(); 
+            get => _selectedSalaryDetail; 
             set 
             {
-                SetValue(value);
-                SelectedSalaryDetail.RecalculateAll();
+                if(_selectedSalaryDetail == null) _selectedSalaryDetail = new SalaryDetail();
+                Set(ref _selectedSalaryDetail, value);
             }
         }
 
-        public AsyncCommand LoadDataCommand { get; }
-        public DelegateCommand AddCommand { get; }
-        public DelegateCommand UpdateCommand { get; }
-        public DelegateCommand DeleteCommand { get; }
+
+
+        public ICommand LoadDataCommand { get; }
+        public ICommand AddCommand { get; }
+        public ICommand UpdateCommand { get; }
+        public ICommand DeleteCommand { get; }
+        public ICommand<RowValidationArgs> UpdateRowCommand { get; }
 
         public SalaryDetailViewModel(ISalaryDetailRepository salaryDetailRepository, IRankCoefficientRepository rankCoefficientRepository)
         {
@@ -49,10 +56,11 @@ namespace SalaryCalculator.ViewModels
             SalaryDetails = new ObservableCollection<SalaryDetail>();
             LoadDataCommand = new AsyncCommand(LoadDataAsync);
             AddCommand = new DelegateCommand(AddSalaryDetail);
-            UpdateCommand = new DelegateCommand(UpdateSalaryDetail, CanExecuteCommands);
-            DeleteCommand = new DelegateCommand(DeleteSalaryDetail, CanExecuteCommands);
+            UpdateCommand = new DelegateCommand(UpdateSalaryDetail);
+            DeleteCommand = new DelegateCommand(DeleteSalaryDetail);
+            UpdateRowCommand = new DelegateCommand<RowValidationArgs>(args => UpdateSalaryDetailByRow(args));
 
-            RankCoefficients = new ObservableCollection<RankCoefficient>(rankCoefficientRepository.GetAllAsync().Await());
+            _rankCoefficients = new ObservableCollection<RankCoefficient>(_rankCoefficientRepository.GetAllAsync().Await());
             LoadDataAsync().Await();
         }
 
@@ -63,19 +71,47 @@ namespace SalaryCalculator.ViewModels
 
         private void AddSalaryDetail()
         {
-            var newDetail = new SalaryDetail();
+            if (SelectedSalaryDetail == null) return;
+            var newDetail = new SalaryDetail()
+            {
+                Performer = SelectedSalaryDetail.Performer,
+                RankCoefficient = SelectedSalaryDetail.RankCoefficient,
+                HoursOfWorkPerDay = SelectedSalaryDetail.HoursOfWorkPerDay,
+                EffectiveWorkingTimeFund = SelectedSalaryDetail.EffectiveWorkingTimeFund
+            };
             newDetail.RecalculateAll();
+            SelectedSalaryDetail = newDetail;
             SalaryDetails.Add(newDetail);
+            _salaryDetailRepository.AddAsync(newDetail);
         }
 
         private void UpdateSalaryDetail()
         {
             if (SelectedSalaryDetail != null)
             {
-                _salaryDetailRepository.Update(SelectedSalaryDetail);
+                SelectedSalaryDetail.RankCoefficient = _rankCoefficientRepository.GetByIdAsync(SelectedSalaryDetail.RankCoefficient.Id).Await();
                 SelectedSalaryDetail.RecalculateAll();
+                _salaryDetailRepository.Update(SelectedSalaryDetail);
             }
         }
+
+        private void UpdateSalaryDetailByRow(RowValidationArgs args)
+        {
+            if (args.Item == null) return;
+            var item = args.Item as SalaryDetail;
+            item.RankCoefficient = _rankCoefficientRepository.GetByIdAsync(item.RankCoefficient.Id).Await();
+            item.RecalculateAll();
+            SelectedSalaryDetail = item;
+            if(args.IsNewItem)
+            {
+                _salaryDetailRepository.AddAsync(item);
+            }
+            else
+            {
+                _salaryDetailRepository.Update(item);
+            }
+        }
+
 
         private void DeleteSalaryDetail()
         {
@@ -85,7 +121,5 @@ namespace SalaryCalculator.ViewModels
                 SalaryDetails.Remove(SelectedSalaryDetail);
             }
         }
-
-        private bool CanExecuteCommands() => SelectedSalaryDetail != null;
     }
 }

@@ -2,5 +2,8 @@
 
 namespace SalaryCalculator.Data.Repositories
 {
-    public interface IRankCoefficientRepository : IBaseRepository<RankCoefficient> { }
+    public interface IRankCoefficientRepository : IBaseRepository<RankCoefficient> 
+    {
+        RankCoefficient GetByRank(int rank);
+    }
 }

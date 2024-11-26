@@ -17,11 +17,10 @@ namespace SalaryCalculator.Data.Repositories.Impl
             _dbSet = context.Set<TEntity>();
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
             var addedModel = (await _dbSet.AddAsync(entity)).Entity;
-
-            return addedModel;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -36,16 +35,16 @@ namespace SalaryCalculator.Data.Repositories.Impl
             return entity;
         }
 
-        public TEntity Update(TEntity entity)
+        public void Update(TEntity entity)
         {
             _dbSet.Update(entity);
-
-            return entity;
+            _context.SaveChanges();
         }
 
-        public TEntity Delete(TEntity entity)
+        public void Delete(TEntity entity)
         {
-            return _dbSet.Remove(entity).Entity;
+            _dbSet.Remove(entity);
+            _context.SaveChanges();
         }
 
     }

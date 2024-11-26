@@ -43,11 +43,7 @@ namespace SalaryCalculator
             services.AddSingleton<SalaryDetailViewModel>();
             services.AddSingleton<SalaryDetailView>();
 
-            services.AddDbContext<DatabaseContext>(options =>
-            {   
-                options.UseSqlite("Data Source=data.db")
-                       .UseLazyLoadingProxies();
-            });
+            services.AddDbContext<DatabaseContext>();
             services.AddTransient<IRankCoefficientRepository, RankCoefficientRepository>();
             services.AddTransient<ISalaryDetailRepository, SalaryDetailRepository>();
         }

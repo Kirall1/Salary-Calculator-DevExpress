@@ -10,7 +10,7 @@ using SalaryCalculator.Data;
 namespace SalaryCalculator.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241126133836_Initial")]
+    [Migration("20241127120126_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -22,6 +22,28 @@ namespace SalaryCalculator.Migrations
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true);
+
+            modelBuilder.Entity("SalaryCalculator.Models.AdditionToSalary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Addition")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("SalaryDetailId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Standard")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalaryDetailId");
+
+                    b.ToTable("AdditionToSalaries");
+                });
 
             modelBuilder.Entity("SalaryCalculator.Models.RankCoefficient", b =>
                 {
@@ -77,6 +99,15 @@ namespace SalaryCalculator.Migrations
                     b.ToTable("SalaryDetails");
                 });
 
+            modelBuilder.Entity("SalaryCalculator.Models.AdditionToSalary", b =>
+                {
+                    b.HasOne("SalaryCalculator.Models.SalaryDetail", "SalaryDetail")
+                        .WithMany("Additions")
+                        .HasForeignKey("SalaryDetailId");
+
+                    b.Navigation("SalaryDetail");
+                });
+
             modelBuilder.Entity("SalaryCalculator.Models.SalaryDetail", b =>
                 {
                     b.HasOne("SalaryCalculator.Models.RankCoefficient", "RankCoefficient")
@@ -89,6 +120,11 @@ namespace SalaryCalculator.Migrations
             modelBuilder.Entity("SalaryCalculator.Models.RankCoefficient", b =>
                 {
                     b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("SalaryCalculator.Models.SalaryDetail", b =>
+                {
+                    b.Navigation("Additions");
                 });
 #pragma warning restore 612, 618
         }

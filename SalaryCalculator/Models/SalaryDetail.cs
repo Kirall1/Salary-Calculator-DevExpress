@@ -1,4 +1,4 @@
-﻿using DevExpress.Drawing.TextFormatter.Internal;
+﻿using System.Collections.Generic;
 
 namespace SalaryCalculator.Models
 {
@@ -12,6 +12,7 @@ namespace SalaryCalculator.Models
         public int EffectiveWorkingTimeFund { get; set; } //Эффективный фонд рабочего времени
         public decimal PremiumCoefficient { get; set; } = 1.2M; //Коэффициент премирования 
         public decimal Salary { get; set; } //Зарплата
+        public virtual IEnumerable<AdditionToSalary> Additions { get; set; }
 
         private void CalculateMonthlyBaseRate()
         {
@@ -33,6 +34,10 @@ namespace SalaryCalculator.Models
             CalculateMonthlyBaseRate();
             CalculateHourBaseRate();
             CalculateSalary();
+            foreach (var item in Additions)
+            {
+                item.CalculateAddition();
+            }
         }
 
     }

@@ -11,6 +11,8 @@ namespace SalaryCalculator.Data
 
         public DbSet<RankCoefficient> RankCoefficients { get; set; }
 
+        public DbSet<AdditionToSalary> AdditionToSalaries {  get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=data.db")

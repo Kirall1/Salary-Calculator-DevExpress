@@ -49,6 +49,31 @@ namespace SalaryCalculator.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AdditionToSalaries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Standard = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Addition = table.Column<decimal>(type: "TEXT", nullable: false),
+                    SalaryDetailId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdditionToSalaries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdditionToSalaries_SalaryDetails_SalaryDetailId",
+                        column: x => x.SalaryDetailId,
+                        principalTable: "SalaryDetails",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdditionToSalaries_SalaryDetailId",
+                table: "AdditionToSalaries",
+                column: "SalaryDetailId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_SalaryDetails_RankCoefficientId",
                 table: "SalaryDetails",
@@ -58,6 +83,9 @@ namespace SalaryCalculator.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AdditionToSalaries");
+
             migrationBuilder.DropTable(
                 name: "SalaryDetails");
 

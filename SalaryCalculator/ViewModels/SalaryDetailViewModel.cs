@@ -15,6 +15,7 @@ namespace SalaryCalculator.ViewModels
     {
         private readonly ISalaryDetailRepository _salaryDetailRepository;
         private readonly IRankCoefficientRepository _rankCoefficientRepository;
+        private readonly IAdditionToSalaryRepository _additionToSalaryRepository;
 
 
         private ObservableCollection<SalaryDetail> _salaryDetails;
@@ -36,6 +37,7 @@ namespace SalaryCalculator.ViewModels
             get => _selectedSalaryDetail; 
             set 
             {
+
                 Set(ref _selectedSalaryDetail, value);
                 InitializeEditableSalaryDetail();
             }
@@ -48,31 +50,56 @@ namespace SalaryCalculator.ViewModels
             set => Set(ref _editableSalaryDetail, value);
         }
 
+        private AdditionToSalary _seletedAdditionToSalary;
+        public AdditionToSalary SelectedAdditionToSalary
+        {
+            get => _seletedAdditionToSalary;
+            set
+            {
+                if (value == null)
+                {
+                    value = new AdditionToSalary();
+                }
+                Set(ref _seletedAdditionToSalary, value);
+            }
+        }
+
 
         public ICommand LoadDataCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand UpdateCommand { get; }
         public ICommand DeleteCommand { get; }
-        public ICommand<RowValidationArgs> UpdateRowCommand { get; }
-        public ICommand<InvalidRowExceptionArgs> InvalidRowCommand { get; }
+        public ICommand AddAdditionToSalaryCommand {  get; }
+        public ICommand UpdateAdditionToSalaryCommand { get; }
+        public ICommand DeleteAdditionToSalaryCommand { get; }
+        public ICommand<RowValidationArgs> UpdateSalaryDetailRowCommand { get; }
+        public ICommand<RowValidationArgs> UpdateAdditionToSalaryRowCommand { get; }
 
         #region constructor
-        public SalaryDetailViewModel(ISalaryDetailRepository salaryDetailRepository, IRankCoefficientRepository rankCoefficientRepository)
+        public SalaryDetailViewModel(ISalaryDetailRepository salaryDetailRepository, IRankCoefficientRepository rankCoefficientRepository, IAdditionToSalaryRepository additionToSalaryRepository)
         {
             _salaryDetailRepository = salaryDetailRepository;
             _rankCoefficientRepository = rankCoefficientRepository;
+            _additionToSalaryRepository = additionToSalaryRepository;
 
             LoadDataCommand = new AsyncCommand(LoadDataAsync);
             AddCommand = new AsyncCommand(AddSalaryDetail);
             UpdateCommand = new AsyncCommand(UpdateSalaryDetail);
             DeleteCommand = new AsyncCommand(DeleteSalaryDetail);
-            UpdateRowCommand = new AsyncCommand<RowValidationArgs>(args => UpdateSalaryDetailByRow(args));
+            UpdateSalaryDetailRowCommand = new AsyncCommand<RowValidationArgs>(args => UpdateSalaryDetailByRow(args));
+            UpdateAdditionToSalaryRowCommand = new DelegateCommand<RowValidationArgs>(args => UpdateAdditionToSalaryByRow(args));
+            SelectedAdditionToSalary = new AdditionToSalary();
+
+            AddAdditionToSalaryCommand = new AsyncCommand(AddAdditionToSalary);
+            UpdateAdditionToSalaryCommand = new AsyncCommand(UpdateAdditionToSalary);
+            DeleteAdditionToSalaryCommand = new AsyncCommand(DeleteAdditionToSalary);
 
             _salaryDetails = new ObservableCollection<SalaryDetail>(_salaryDetailRepository.GetAllAsync().Await());
             _rankCoefficients = new ObservableCollection<RankCoefficient>(_rankCoefficientRepository.GetAllAsync().Await());
+            _additionToSalaryRepository = additionToSalaryRepository;
         }
         #endregion
-        //Loading data from DB
+
         private async Task LoadDataAsync()
         {
             SalaryDetails = new ObservableCollection<SalaryDetail>(await _salaryDetailRepository.GetAllAsync());
@@ -162,6 +189,46 @@ namespace SalaryCalculator.ViewModels
                     return;
                 _salaryDetailRepository.Delete(SelectedSalaryDetail);
                 SalaryDetails.Remove(SelectedSalaryDetail);
+                await LoadDataAsync();
+            }
+        }
+
+        private void UpdateAdditionToSalaryByRow(RowValidationArgs args)
+        {
+            if (args.Item == null) return;
+            var item = args.Item as AdditionToSalary;
+            item.CalculateAddition();
+            _additionToSalaryRepository.Update(item);
+        }
+
+        private async Task AddAdditionToSalary()
+        {
+            if (SelectedSalaryDetail != null)
+            {
+                SelectedAdditionToSalary.SalaryDetail = SelectedSalaryDetail;
+                SelectedAdditionToSalary.CalculateAddition();
+                await _additionToSalaryRepository.AddAsync(SelectedAdditionToSalary);
+                await LoadDataAsync();
+            }
+
+        }
+
+        private async Task UpdateAdditionToSalary()
+        {
+            if (SelectedAdditionToSalary != null)
+            {
+                SelectedAdditionToSalary.CalculateAddition();
+                _additionToSalaryRepository.Update(SelectedAdditionToSalary);
+                await LoadDataAsync();
+            }
+            
+        }
+
+        private async Task DeleteAdditionToSalary()
+        {
+            if (SelectedAdditionToSalary != null)
+            {
+                _additionToSalaryRepository.Delete(SelectedAdditionToSalary);
                 await LoadDataAsync();
             }
         }

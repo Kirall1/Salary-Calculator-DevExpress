@@ -8,6 +8,8 @@ using System;
 using System.Windows;
 using SalaryCalculator.Data.Repositories;
 using SalaryCalculator.Data.Repositories.Impl;
+using System.Globalization;
+using System.Windows.Markup;
 
 namespace SalaryCalculator
 {
@@ -18,6 +20,12 @@ namespace SalaryCalculator
     {
         static App()
         {
+            CultureInfo culture = new CultureInfo("ru-RU");
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
+            XmlLanguage.GetLanguage(culture.IetfLanguageTag)));
+
             CompatibilitySettings.UseLightweightThemes = true;
             ServiceCollection serviceCollenction = new ServiceCollection();
 
@@ -44,6 +52,7 @@ namespace SalaryCalculator
             services.AddDbContext<DatabaseContext>();
             services.AddTransient<IRankCoefficientRepository, RankCoefficientRepository>();
             services.AddTransient<ISalaryDetailRepository, SalaryDetailRepository>();
+            services.AddTransient<IAdditionToSalaryRepository, AdditionToSalaryRepository>();
         }
     }
 }

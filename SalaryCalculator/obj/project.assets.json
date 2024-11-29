@@ -98,6 +98,9 @@
           }
         }
       },
+      "DevExpress.Mvvm.CodeGenerators/22.1.1": {
+        "type": "package"
+      },
       "DevExpress.Pdf.Core/24.1.7": {
         "type": "package",
         "dependencies": {
@@ -1823,6 +1826,22 @@
         "lib/net452/DevExpress.Mvvm.v24.1.xml",
         "lib/net6.0-windows/DevExpress.Mvvm.v24.1.dll",
         "lib/net6.0-windows/DevExpress.Mvvm.v24.1.xml"
+      ]
+    },
+    "DevExpress.Mvvm.CodeGenerators/22.1.1": {
+      "sha512": "iodkzmQ02AX9rk3uCBrifOIgdxdGYuo8F496ldNSTVI/fI7Ms+Rf3njEF3NTskw8GRqbAkkVVdsG9b1ZrgKX5w==",
+      "type": "package",
+      "path": "devexpress.mvvm.codegenerators/22.1.1",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "analyzers/dotnet/cs/DevExpress.Mvvm.CodeGenerators.dll",
+        "devexpress.mvvm.codegenerators.22.1.1.nupkg.sha512",
+        "devexpress.mvvm.codegenerators.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
       ]
     },
     "DevExpress.Pdf.Core/24.1.7": {
@@ -4398,6 +4417,7 @@
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
       "DevExpress.Images >= 24.1.7",
+      "DevExpress.Mvvm.CodeGenerators >= 22.1.1",
       "DevExpress.Wpf.Core >= 24.1.7",
       "DevExpress.Wpf.ThemesLW >= 24.1.7",
       "Microsoft.EntityFrameworkCore >= 9.0.0",
@@ -4467,6 +4487,10 @@
           "DevExpress.Images": {
             "target": "Package",
             "version": "[24.1.7, )"
+          },
+          "DevExpress.Mvvm.CodeGenerators": {
+            "target": "Package",
+            "version": "[22.1.1, )"
           },
           "DevExpress.Wpf.Core": {
             "target": "Package",

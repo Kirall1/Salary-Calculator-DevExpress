@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Images" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
     <PackageReference Include="DevExpress.Wpf.Core" Version="24.1.7" />
     <PackageReference Include="devexpress.wpf.docking" Version="24.1.7" />
     <PackageReference Include="devexpress.wpf.grid.core" Version="24.1.7" />
@@ -23,11 +24,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

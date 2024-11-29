@@ -6,21 +6,21 @@
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxd="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     x:Class="SalaryCalculator.Views.SalaryDetailView"
-    xmlns:ets="clr-namespace:SalaryCalculator.Infrastructure.TemplateSelectors">
-
+    xmlns:ets="clr-namespace:SalaryCalculator.Infrastructure.TemplateSelectors"
+    xmlns:rs="clr-namespace:SalaryCalculator.Properties">
     <UserControl.Resources>
         <ets:EditTemplateSelector x:Key="TemplateSelector"/>
         <!-- Шаблон для редактирования строки зарплаты -->
         <DataTemplate x:Key="SalaryEditTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="Исполнитель" Margin="0,0,5,0"/>
+                    <TextBlock Text="{x:Static rs:Resources.Performer}" Margin="0,0,5,0"/>
                     <dxe:TextEdit Text="{Binding DataContext.EditableSalaryDetail.Performer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                           Width="220"
                           Validate="PerformerValidate"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="Разряд" Margin="0,0,5,0"/>
+                    <TextBlock Text="{x:Static rs:Resources.Rank}" Margin="0,0,5,0"/>
                     <ComboBox ItemsSource="{Binding DataContext.RankCoefficients, RelativeSource={RelativeSource AncestorType=UserControl}}"
                       SelectedItem="{Binding DataContext.EditableSalaryDetail.RankCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
                       DisplayMemberPath="Rank"
@@ -28,13 +28,13 @@
                       IsEditable="False"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="Количество часов работы в день" Margin="0,0,5,0"/>
+                    <TextBlock Text="{x:Static rs:Resources.HoursOfWorkPerDay}" Margin="0,0,5,0"/>
                     <dxe:TextEdit Text="{Binding DataContext.EditableSalaryDetail.HoursOfWorkPerDay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                           Width="220"
                           Validate="HoursOfWorkPerDayValidate"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="Эффективный фонд рабочего времени, дн" Margin="0,0,5,0"/>
+                    <TextBlock Text="{x:Static rs:Resources.EffectiveWorkingTimeFund}" Margin="0,0,5,0"/>
                     <dxe:TextEdit Text="{Binding DataContext.EditableSalaryDetail.EffectiveWorkingTimeFund, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                           Width="240"
                           Validate="EffectiveWorkingTimeFundValidate"/>
@@ -46,7 +46,7 @@
         <DataTemplate x:Key="AdditionEditTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="Норматив" Margin="0,0,5,0"/>
+                    <TextBlock Text="{x:Static rs:Resources.Standard}" Margin="0,0,5,0"/>
                     <dxe:TextEdit Text="{Binding DataContext.EditableAdditionToSalary.Standard, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                           Width="200"
                           Validate="StandardValidate"/>
@@ -67,7 +67,7 @@
 
 
         <dxg:GridControl Grid.Row="0" ItemsSource="{Binding SalaryDetails, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                         SelectedItem="{Binding SelectedSalaryDetail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                         SelectedItem="{Binding SelectedSalaryDetail, UpdateSourceTrigger=PropertyChanged}">
             <dxg:GridControl.View>
                 <dxg:TableView AutoWidth="True"
                                ShowUpdateRowButtons="OnCellEditorOpen"
@@ -76,9 +76,9 @@
                     <dxg:TableView.UpdateRowButtonsTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <Button Margin="0,0,6,0" Content="Сохранить" 
+                                <Button Margin="0,0,6,0" Content="{x:Static rs:Resources.Save}" 
                                     Command="{Binding View.Commands.UpdateRow}"/>
-                                <Button Content="Отменить"
+                                <Button Content="{x:Static rs:Resources.Cancel}"
                                     Command="{Binding View.Commands.CancelRowChanges}"/>
                             </StackPanel>
                         </DataTemplate>
@@ -96,24 +96,24 @@
                                 <dxg:TableView.UpdateRowButtonsTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                            <Button Margin="0,0,6,0" Content="Сохранить" 
+                                            <Button Margin="0,0,6,0" Content="{x:Static rs:Resources.Save}" 
                                     Command="{Binding View.Commands.UpdateRow}"/>
-                                            <Button Content="Отменить"
+                                            <Button Content="{x:Static rs:Resources.Cancel}"
                                     Command="{Binding View.Commands.CancelRowChanges}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </dxg:TableView.UpdateRowButtonsTemplate>
                             </dxg:TableView>
                         </dxg:GridControl.View>
-                        <dxg:GridColumn FieldName="Standard"
-                                        Header="Норматив"
+                        <dxg:GridColumn Binding="{Binding Standard, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        Header="{x:Static rs:Resources.Standard}"
                                         Validate="StandardValidate">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="Addition"
-                                        Header="Дополнение к заработной плате, руб."
+                        <dxg:GridColumn Binding="{Binding Addition}"
+                                        Header="{x:Static rs:Resources.AdditionToSalary}"
                                         AllowEditing="False">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
@@ -123,11 +123,12 @@
                 </dxg:DataControlDetailDescriptor>
             </dxg:GridControl.DetailDescriptor>
 
-            <dxg:GridColumn FieldName="Performer" 
-                            Header="Исполнители" 
+            <dxg:GridColumn Binding="{Binding Performer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            Header="{x:Static rs:Resources.Performer}" 
                             Validate="PerformerValidate"/>
 
-            <dxg:GridColumn Binding="{Binding RankCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Разряд">
+            <dxg:GridColumn Binding="{Binding RankCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                            Header="{x:Static rs:Resources.Rank}">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings ItemsSource="{Binding RankCoefficients}" 
                                               DisplayMember="Rank"
@@ -135,51 +136,56 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="HoursOfWorkPerDay" 
-                            Header="Количество часов работы в день, ч."
+            <dxg:GridColumn Binding="{Binding HoursOfWorkPerDay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                            Header="{x:Static rs:Resources.HoursOfWorkPerDay}"
                             Validate="HoursOfWorkPerDayValidate">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Left" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="EffectiveWorkingTimeFund" 
-                            Header="Эффективный фонд рабочего времени, дн."
+            <dxg:GridColumn Binding="{Binding EffectiveWorkingTimeFund, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                            Header="{x:Static rs:Resources.EffectiveWorkingTimeFund}"
                             Validate="EffectiveWorkingTimeFundValidate">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Left" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
 
-            <dxg:GridColumn Binding="{Binding RankCoefficient.Coefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Тарифный коэффициент"
+            <dxg:GridColumn Binding="{Binding RankCoefficient.Coefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                            Header="{x:Static rs:Resources.TariffCoefficient}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="PremiumCoefficient" Header="Коэффициент премий."
+            <dxg:GridColumn Binding="{Binding PremiumCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            Header="{x:Static rs:Resources.PremiumCoefficient}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="MonthlyBaseRate" Header="Месячная базовая ставка, руб."
+            <dxg:GridColumn Binding="{Binding PremiumCoefficient}"
+                            Header="{x:Static rs:Resources.MonthlyBaseRate}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="HourBaseRate" Header="Часовая базовая ставка, руб."
+            <dxg:GridColumn Binding="{Binding HourBaseRate}"
+                            Header="{x:Static rs:Resources.HourBaseRate}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="Salary" Header="Заработная плата, руб."
+            <dxg:GridColumn Binding="{Binding Salary}"
+                            Header="{x:Static rs:Resources.Salary}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
@@ -191,9 +197,9 @@
                                      Content="{Binding SelectedItem}" />
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Добавить" Command="{Binding AddCommand}" Width="200" Margin="5"/>
-            <Button Content="Изменить" Command="{Binding UpdateCommand}" Width="200" Margin="5"/>
-            <Button Content="Удалить" Command="{Binding DeleteCommand}" Width="200" Margin="5"/>
+            <Button Content="{x:Static rs:Resources.Add}" Command="{Binding AddCommand}" Width="200" Margin="5"/>
+            <Button Content="{x:Static rs:Resources.Edit}" Command="{Binding UpdateCommand}" Width="200" Margin="5"/>
+            <Button Content="{x:Static rs:Resources.Delete}" Command="{Binding DeleteCommand}" Width="200" Margin="5"/>
         </StackPanel>
 
     </Grid>

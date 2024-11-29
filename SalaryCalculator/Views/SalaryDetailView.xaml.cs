@@ -9,11 +9,12 @@ namespace SalaryCalculator.Views
     /// </summary>
     public partial class SalaryDetailView : UserControl
     {
-        public SalaryDetailView(SalaryDetailViewModel viewModel)
+        public SalaryDetailView(DataGridViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;
         }
+
 
         private void PerformerValidate(object sender, ValidationEventArgs e)
         {

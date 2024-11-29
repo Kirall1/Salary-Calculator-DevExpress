@@ -27,5 +27,6 @@
     <PkgDevExpress_Wpf_LayoutControl Condition=" '$(PkgDevExpress_Wpf_LayoutControl)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.layoutcontrol\24.1.7</PkgDevExpress_Wpf_LayoutControl>
     <PkgDevExpress_Wpf_Grid_Core Condition=" '$(PkgDevExpress_Wpf_Grid_Core)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.grid.core\24.1.7</PkgDevExpress_Wpf_Grid_Core>
     <PkgDevExpress_Wpf_Docking Condition=" '$(PkgDevExpress_Wpf_Docking)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.docking\24.1.7</PkgDevExpress_Wpf_Docking>
+    <PkgDevExpress_Mvvm_CodeGenerators Condition=" '$(PkgDevExpress_Mvvm_CodeGenerators)' == '' ">C:\Users\Kir\.nuget\packages\devexpress.mvvm.codegenerators\22.1.1</PkgDevExpress_Mvvm_CodeGenerators>
   </PropertyGroup>
 </Project>

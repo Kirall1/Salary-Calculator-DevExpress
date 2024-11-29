@@ -10,6 +10,6 @@ namespace SalaryCalculator.Data.Repositories
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> AddAsync(TEntity entity);
         void Update(TEntity entitty);
-        void Delete(TEntity entity);
+        void Delete(TEntity entitty);
     }
 }

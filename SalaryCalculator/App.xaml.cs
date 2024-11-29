@@ -46,7 +46,7 @@ namespace SalaryCalculator
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainViewModel>();
 
-            services.AddSingleton<SalaryDetailViewModel>();
+            services.AddSingleton<DataGridViewModel>();
             services.AddSingleton<SalaryDetailView>();
 
             services.AddDbContext<DatabaseContext>();

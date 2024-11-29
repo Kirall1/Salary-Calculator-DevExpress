@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="ViewModels\SalaryDetailViewModel.cs">
+    <Compile Update="ViewModels\DataGridViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SalaryDetailView.xaml.cs">

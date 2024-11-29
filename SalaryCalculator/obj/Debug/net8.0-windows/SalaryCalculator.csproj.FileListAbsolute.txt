@@ -198,3 +198,8 @@ C:\Work\SalaryCalculator\SalaryCalculator\bin\Debug\net8.0-windows\Castle.Core.d
 C:\Work\SalaryCalculator\SalaryCalculator\bin\Debug\net8.0-windows\Microsoft.EntityFrameworkCore.Proxies.dll
 C:\Work\SalaryCalculator\SalaryCalculator\bin\Debug\net8.0-windows\DevExpress.Xpf.LayoutControl.v24.1.dll
 C:\Work\SalaryCalculator\SalaryCalculator\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Work\SalaryCalculator\SalaryCalculator\bin\Debug\net8.0-windows\ru-RU\SalaryCalculator.resources.dll
+C:\Work\SalaryCalculator\SalaryCalculator\obj\Debug\net8.0-windows\SalaryCalculator.Properties.Resources.resources
+C:\Work\SalaryCalculator\SalaryCalculator\obj\Debug\net8.0-windows\SalaryCalculator.Properties.Resources.ru-RU.resources
+C:\Work\SalaryCalculator\SalaryCalculator\obj\Debug\net8.0-windows\SalaryCalculator.csproj.GenerateResource.cache
+C:\Work\SalaryCalculator\SalaryCalculator\obj\Debug\net8.0-windows\ru-RU\SalaryCalculator.resources.dll

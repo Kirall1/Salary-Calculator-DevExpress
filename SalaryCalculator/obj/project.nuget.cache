@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KZ1fT/Hr6Hg=",
+  "dgSpecHash": "qIGM8u0/Y2s=",
   "success": true,
   "projectFilePath": "C:\\Work\\SalaryCalculator\\SalaryCalculator\\SalaryCalculator.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.drawing\\24.1.7\\devexpress.drawing.24.1.7.nupkg.sha512",
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.images\\24.1.7\\devexpress.images.24.1.7.nupkg.sha512",
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.mvvm\\24.1.7\\devexpress.mvvm.24.1.7.nupkg.sha512",
+    "C:\\Users\\Kir\\.nuget\\packages\\devexpress.mvvm.codegenerators\\22.1.1\\devexpress.mvvm.codegenerators.22.1.1.nupkg.sha512",
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.pdf.core\\24.1.7\\devexpress.pdf.core.24.1.7.nupkg.sha512",
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.pdf.drawing\\24.1.7\\devexpress.pdf.drawing.24.1.7.nupkg.sha512",
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages\\devexpress.printing.core\\24.1.7\\devexpress.printing.core.24.1.7.nupkg.sha512",

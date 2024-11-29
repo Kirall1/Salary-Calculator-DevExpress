@@ -8,6 +8,10 @@ namespace SalaryCalculator.Data.Repositories.Impl
 
         public override void Delete(SalaryDetail entity)
         {
+            if (entity.Additions == null)
+            {
+                return;
+            }
             foreach (var item in entity.Additions)
             {
                 _context.AdditionToSalaries.Remove(item);

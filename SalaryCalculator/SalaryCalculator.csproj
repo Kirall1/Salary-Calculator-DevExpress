@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Images" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
     <PackageReference Include="DevExpress.Wpf.Core" Version="24.1.7" />
     <PackageReference Include="devexpress.wpf.docking" Version="24.1.7" />
     <PackageReference Include="devexpress.wpf.grid.core" Version="24.1.7" />

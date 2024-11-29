@@ -34,9 +34,12 @@ namespace SalaryCalculator.Models
             CalculateMonthlyBaseRate();
             CalculateHourBaseRate();
             CalculateSalary();
-            foreach (var item in Additions)
+            if (Additions != null)
             {
-                item.CalculateAddition();
+                foreach (var item in Additions)
+                {
+                    item.CalculateAddition();
+                }
             }
         }
 

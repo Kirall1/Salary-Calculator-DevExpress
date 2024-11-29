@@ -17,10 +17,11 @@ namespace SalaryCalculator.Data.Repositories.Impl
             _dbSet = context.Set<TEntity>();
         }
 
-        public async Task AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
             var addedModel = (await _dbSet.AddAsync(entity)).Entity;
             await _context.SaveChangesAsync();
+            return addedModel;
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

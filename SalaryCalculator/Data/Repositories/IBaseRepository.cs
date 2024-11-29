@@ -8,7 +8,7 @@ namespace SalaryCalculator.Data.Repositories
     {
         Task<TEntity> GetByIdAsync(int id);
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task AddAsync(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
         void Update(TEntity entitty);
         void Delete(TEntity entity);
     }

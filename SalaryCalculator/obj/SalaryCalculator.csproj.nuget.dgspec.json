@@ -58,10 +58,6 @@
               "target": "Package",
               "version": "[24.1.7, )"
             },
-            "DevExpress.Mvvm.CodeGenerators": {
-              "target": "Package",
-              "version": "[22.1.1, )"
-            },
             "DevExpress.Wpf.Core": {
               "target": "Package",
               "version": "[24.1.7, )"

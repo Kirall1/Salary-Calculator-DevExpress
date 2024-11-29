@@ -73,7 +73,6 @@
           }
         }
       },
-      "DevExpress.Mvvm.CodeGenerators/22.1.1": {},
       "DevExpress.Pdf.Core/24.1.7": {
         "dependencies": {
           "DevExpress.Data": "24.1.7",
@@ -1325,13 +1324,6 @@
       "sha512": "sha512-H3N6goa0V0j9WpDgPnNcgGi73s8mqVdKjuD8ntSkhzqDjHfMm+L12Nm+vd64dq6HSVTnmbrLui2lWczp33hPhw==",
       "path": "devexpress.mvvm/24.1.7",
       "hashPath": "devexpress.mvvm.24.1.7.nupkg.sha512"
-    },
-    "DevExpress.Mvvm.CodeGenerators/22.1.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-iodkzmQ02AX9rk3uCBrifOIgdxdGYuo8F496ldNSTVI/fI7Ms+Rf3njEF3NTskw8GRqbAkkVVdsG9b1ZrgKX5w==",
-      "path": "devexpress.mvvm.codegenerators/22.1.1",
-      "hashPath": "devexpress.mvvm.codegenerators.22.1.1.nupkg.sha512"
     },
     "DevExpress.Pdf.Core/24.1.7": {
       "type": "package",

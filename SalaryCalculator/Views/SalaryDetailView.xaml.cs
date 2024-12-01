@@ -1,4 +1,8 @@
-﻿using DevExpress.Xpf.Editors;
+﻿using DevExpress.Mvvm.POCO;
+using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Editors;
+using DevExpress.Xpf.Grid;
+using SalaryCalculator.Models;
 using SalaryCalculator.ViewModels;
 using System.Windows.Controls;
 
@@ -38,10 +42,10 @@ namespace SalaryCalculator.Views
             if (e.Value == null) return;
             if (int.TryParse(e.Value.ToString(), out int value))
             {
-                if (value < 1 || value > 30)
+                if (value < 0 || value > 30)
                 {
                     e.IsValid = false;
-                    e.ErrorContent = "Значение должно быть в диапазоне от 1 до 30";
+                    e.ErrorContent = "Значение должно быть в диапазоне от 0 до 30";
                     return;
                 }
             }
@@ -58,7 +62,7 @@ namespace SalaryCalculator.Views
             if (e.Value == null) return; 
             if (int.TryParse(e.Value.ToString(), out int value))
             {
-                if (value < 1 || value > 16)
+                if (value < 0 || value > 16)
                 {
                     e.IsValid = false;
                     e.ErrorContent = "Значение должно быть в диапазоне от 0 до 16";
@@ -91,6 +95,14 @@ namespace SalaryCalculator.Views
                 e.ErrorContent = "Значение должно быть числом";
                 return;
             }
+        }
+
+        private void TableView_ValidateRow(object sender, DevExpress.Xpf.Grid.GridRowValidationEventArgs e)
+        {
+            var grid = (GridControl)e.Source;
+            var masterGrid = grid.GetMasterGrid();
+            var masterRowHandle = grid.GetMasterRowHandle();
+            var masterRow = masterGrid.GetRow(masterRowHandle) as SalaryDetail;
         }
     }
 }

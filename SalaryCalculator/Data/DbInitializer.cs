@@ -99,8 +99,8 @@ namespace SalaryCalculator.Data
 
                     context.AdditionToSalaries.AddRange(additionToSalaries);
 
-                    context.SaveChanges();
                 }
+                context.SaveChanges();
             }
             catch { }
             //TODO: Add error message displaying

@@ -67,7 +67,7 @@
 
 
         <dxg:GridControl Grid.Row="0" ItemsSource="{Binding SalaryDetails, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                         SelectedItem="{Binding SelectedSalaryDetail, UpdateSourceTrigger=PropertyChanged}">
+                         CurrentItem="{Binding SelectedSalaryDetail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
             <dxg:GridControl.View>
                 <dxg:TableView AutoWidth="True"
                                ShowUpdateRowButtons="OnCellEditorOpen"
@@ -87,11 +87,14 @@
             </dxg:GridControl.View>
 
             <dxg:GridControl.DetailDescriptor>
-                <dxg:DataControlDetailDescriptor ItemsSourceBinding="{Binding Additions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                    <dxg:GridControl SelectedItem="{Binding SelectedAdditionToSalary, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <dxg:DataControlDetailDescriptor ItemsSourceBinding="{Binding Additions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                 ParentPath="SalaryDetail">
+                    <dxg:GridControl CurrentItem="{Binding SelectedAdditionToSalary, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxg:GridControl.View>
                             <dxg:TableView AutoWidth="True"
                                            ShowUpdateRowButtons="OnCellEditorOpen"
+                                           NewItemRowPosition="Bottom"
+                                           ValidateRow="TableView_ValidateRow"
                                            ValidateRowCommand="{Binding UpdateAdditionToSalaryRowCommand}">
                                 <dxg:TableView.UpdateRowButtonsTemplate>
                                     <DataTemplate>
@@ -112,7 +115,8 @@
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Binding="{Binding Addition}"
+                        
+                        <dxg:GridColumn Binding="{Binding Addition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                         Header="{x:Static rs:Resources.AdditionToSalary}"
                                         AllowEditing="False">
                             <dxg:GridColumn.EditSettings>

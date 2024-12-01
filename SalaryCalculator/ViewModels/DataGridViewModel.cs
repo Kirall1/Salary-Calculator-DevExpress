@@ -25,13 +25,13 @@ namespace SalaryCalculator.ViewModels
             get => _selectedItem;
             set
             {
-                if (value is SalaryDetailViewModel salaryDetail)
+                if (value is SalaryDetail salaryDetail)
                 {
                     AddCommand = new AsyncCommand(AddSalaryDetail);
                     UpdateCommand = new DelegateCommand(UpdateSalaryDetail);
                     DeleteCommand = new DelegateCommand(DeleteSalaryDetail);
                 }
-                else if (value is AdditionToSalaryViewModel additionToSalary)
+                else if (value is AdditionToSalary additionToSalary)
                 {
                     AddCommand = new AsyncCommand(AddAdditionToSalary);
                     UpdateCommand = new DelegateCommand(UpdateAdditionToSalary);
@@ -45,8 +45,8 @@ namespace SalaryCalculator.ViewModels
             }
         }
 
-        private ObservableCollection<SalaryDetailViewModel> _salaryDetails;
-        public ObservableCollection<SalaryDetailViewModel> SalaryDetails 
+        private ObservableCollection<SalaryDetail> _salaryDetails;
+        public ObservableCollection<SalaryDetail> SalaryDetails 
         { 
             get => _salaryDetails;
             set
@@ -61,8 +61,8 @@ namespace SalaryCalculator.ViewModels
             get => _rankCoefficients;
         }
 
-        private SalaryDetailViewModel _selectedSalaryDetail;
-        public SalaryDetailViewModel SelectedSalaryDetail 
+        private SalaryDetail _selectedSalaryDetail;
+        public SalaryDetail SelectedSalaryDetail 
         {
             get => _selectedSalaryDetail; 
             set 
@@ -73,15 +73,15 @@ namespace SalaryCalculator.ViewModels
             }
         }
 
-        private SalaryDetailViewModel _editableSalaryDetail;
-        public SalaryDetailViewModel EditableSalaryDetail
+        private SalaryDetail _editableSalaryDetail;
+        public SalaryDetail EditableSalaryDetail
         {
             get => _editableSalaryDetail;
             set => Set(ref _editableSalaryDetail, value);
         }
 
-        private AdditionToSalaryViewModel _seletedAdditionToSalary;
-        public AdditionToSalaryViewModel SelectedAdditionToSalary
+        private AdditionToSalary _seletedAdditionToSalary;
+        public AdditionToSalary SelectedAdditionToSalary
         {
             get => _seletedAdditionToSalary;
             set
@@ -92,8 +92,8 @@ namespace SalaryCalculator.ViewModels
             }
         }
 
-        private AdditionToSalaryViewModel _editableAdditionToSalary;
-        public AdditionToSalaryViewModel EditableAdditionToSalary
+        private AdditionToSalary _editableAdditionToSalary;
+        public AdditionToSalary EditableAdditionToSalary
         {
             get => _editableAdditionToSalary;
             set
@@ -124,7 +124,9 @@ namespace SalaryCalculator.ViewModels
             DeleteCommand = new DelegateCommand(DeleteSalaryDetail);
             UpdateSalaryDetailRowCommand = new AsyncCommand<RowValidationArgs>(args => UpdateSalaryDetailByRow(args));
             UpdateAdditionToSalaryRowCommand = new DelegateCommand<RowValidationArgs>(args => UpdateAdditionToSalaryByRow(args));
-            //SelectedAdditionToSalary = new AdditionToSalaryViewModel();
+            EditableSalaryDetail = new SalaryDetail();
+            EditableAdditionToSalary = new AdditionToSalary();
+
         }
         #endregion
 
@@ -132,7 +134,10 @@ namespace SalaryCalculator.ViewModels
         {
             if (SelectedSalaryDetail != null)
             {
-                EditableSalaryDetail = new SalaryDetailViewModel(SelectedSalaryDetail);
+                EditableSalaryDetail.Performer = SelectedSalaryDetail.Performer;
+                EditableSalaryDetail.RankCoefficient = SelectedSalaryDetail.RankCoefficient;
+                EditableSalaryDetail.EffectiveWorkingTimeFund = SelectedSalaryDetail.EffectiveWorkingTimeFund;
+                EditableSalaryDetail.HoursOfWorkPerDay = SelectedSalaryDetail.HoursOfWorkPerDay;
             }
         }
 
@@ -140,36 +145,31 @@ namespace SalaryCalculator.ViewModels
         {
             if (SelectedAdditionToSalary != null)
             {
-                EditableAdditionToSalary = new AdditionToSalaryViewModel(SelectedAdditionToSalary);
+                EditableAdditionToSalary.Standard = SelectedAdditionToSalary.Standard;
             }
         }
 
 
         private async Task LoadDataAsync()
         {
-            SalaryDetails = new ObservableCollection<SalaryDetailViewModel>();
-            foreach (var salaryDetail in await _salaryDetailRepository.GetAllAsync())
-            {
-                SalaryDetails.Add(new SalaryDetailViewModel(salaryDetail));
-            }
-            _rankCoefficients = new ObservableCollection<RankCoefficient>(_rankCoefficientRepository.GetAllAsync().Await());
+            SalaryDetails = new ObservableCollection<SalaryDetail>(await _salaryDetailRepository.GetAllAsync());
+
+            _rankCoefficients = new ObservableCollection<RankCoefficient>(await _rankCoefficientRepository.GetAllAsync());
         }
 
         //Adding SalaryDetail through input fields
         private async Task AddSalaryDetail()
         {
             if (EditableSalaryDetail == null) return;
-            var newDetailViewModel = new SalaryDetailViewModel()
+            var newDetail = new SalaryDetail()
             {
                 Performer = EditableSalaryDetail.Performer,
                 RankCoefficient = EditableSalaryDetail.RankCoefficient,
                 HoursOfWorkPerDay = EditableSalaryDetail.HoursOfWorkPerDay,
                 EffectiveWorkingTimeFund = EditableSalaryDetail.EffectiveWorkingTimeFund
             };
-            var newDetail = newDetailViewModel.ToSalaryDetail();
             newDetail.RecalculateAll();
-            SelectedSalaryDetail = new SalaryDetailViewModel(await _salaryDetailRepository.AddAsync(newDetail));
-            SalaryDetails.Add(SelectedSalaryDetail);
+            SalaryDetails.Add(await _salaryDetailRepository.AddAsync(newDetail));
         }
 
         //Editng SalaryDetail through input fields
@@ -184,7 +184,7 @@ namespace SalaryCalculator.ViewModels
                 salaryDetail.HoursOfWorkPerDay = EditableSalaryDetail.HoursOfWorkPerDay;
                 salaryDetail.RecalculateAll();
                 _salaryDetailRepository.Update(salaryDetail);
-                SelectedSalaryDetail = new SalaryDetailViewModel(salaryDetail);
+                SelectedSalaryDetail = salaryDetail;
             }
         }
 
@@ -193,13 +193,11 @@ namespace SalaryCalculator.ViewModels
         private async Task UpdateSalaryDetailByRow(RowValidationArgs args)
         {
             if (args.Item == null) return;
-            var item = args.Item as SalaryDetailViewModel;
+            var item = args.Item as SalaryDetail;
             item.RankCoefficient = _rankCoefficientRepository.GetByIdAsync(item.RankCoefficient.Id).Await();
             if(args.IsNewItem)
             {
-                var newDetail = item.ToSalaryDetail();
-                newDetail.RecalculateAll();
-                SelectedSalaryDetail = new SalaryDetailViewModel(await _salaryDetailRepository.AddAsync(newDetail));
+                SelectedSalaryDetail = await _salaryDetailRepository.AddAsync(item);
                 SalaryDetails.Add(SelectedSalaryDetail);
             }
             else
@@ -211,8 +209,7 @@ namespace SalaryCalculator.ViewModels
                 salaryDetail.HoursOfWorkPerDay = item.HoursOfWorkPerDay;
                 salaryDetail.RecalculateAll();
                 _salaryDetailRepository.Update(salaryDetail);
-                SelectedSalaryDetail = new SalaryDetailViewModel(salaryDetail);
-                item = SelectedSalaryDetail;
+                SelectedSalaryDetail = salaryDetail;
             }
         }
 
@@ -237,26 +234,24 @@ namespace SalaryCalculator.ViewModels
         private void UpdateAdditionToSalaryByRow(RowValidationArgs args)
         {
             if (args.Item == null) return;
-            var item = args.Item as AdditionToSalaryViewModel;
+            var item = args.Item as AdditionToSalary;
             var additionToSalary = _additionToSalaryRepository.GetByIdAsync(item.Id).Await();
             additionToSalary.Standard = item.Standard;
             additionToSalary.CalculateAddition();
             _additionToSalaryRepository.Update(additionToSalary);
-            SelectedAdditionToSalary = new AdditionToSalaryViewModel(additionToSalary);
+            SelectedAdditionToSalary = additionToSalary;
         }
 
         private async Task AddAdditionToSalary()
         {
             if (SelectedAdditionToSalary == null) return;
 
-            var newAdditionViewModel = new AdditionToSalaryViewModel()
+            var newAddition= new AdditionToSalary()
             {
-                Standard = EditableAdditionToSalary.Standard,
-                SalaryDetailId = EditableAdditionToSalary.SalaryDetailId
+                Standard = EditableAdditionToSalary.Standard
             };
-            var newAddition = newAdditionViewModel.ToAdditionToSalary();
             newAddition.CalculateAddition();
-            SelectedAdditionToSalary = new AdditionToSalaryViewModel(await _additionToSalaryRepository.AddAsync(newAddition));
+            SelectedAdditionToSalary = await _additionToSalaryRepository.AddAsync(newAddition);
             
         }
 
@@ -265,23 +260,19 @@ namespace SalaryCalculator.ViewModels
             if (EditableAdditionToSalary != null && SelectedAdditionToSalary != null)
             {
                 SelectedAdditionToSalary.Standard = EditableAdditionToSalary.Standard;
-
-                var additionToSalary = _additionToSalaryRepository.GetByIdAsync(SelectedAdditionToSalary.Id).Await();
-                additionToSalary.Standard = SelectedAdditionToSalary.Standard;
-                additionToSalary.CalculateAddition();
-                _additionToSalaryRepository.Update(additionToSalary);
-                SelectedAdditionToSalary = new AdditionToSalaryViewModel(additionToSalary);
+                SelectedAdditionToSalary.CalculateAddition();
+                _additionToSalaryRepository.Update(SelectedAdditionToSalary);
             }
             
         }
 
         private void DeleteAdditionToSalary()
         {
-            //if (SelectedAdditionToSalary != null)
-            //{
-            //    _additionToSalaryRepository.Delete(SelectedAdditionToSalary);
-            //    SelectedSalaryDetail = _salaryDetailRepository.GetByIdAsync(SelectedSalaryDetail.Id).Await();
-            //}
+            if (SelectedAdditionToSalary != null)
+            {
+                _additionToSalaryRepository.Delete(SelectedAdditionToSalary);
+                SelectedSalaryDetail = _salaryDetailRepository.GetByIdAsync(SelectedAdditionToSalary.Id).Await();
+            }
         }
     }
 }

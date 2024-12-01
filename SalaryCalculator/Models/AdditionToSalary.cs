@@ -2,10 +2,27 @@
 {
     public class AdditionToSalary : BaseModel
     {
-        public decimal Standard {  get; set; }
-        public decimal Addition { get; set; }
+        private decimal _standard;
+        public decimal Standard
+        {
+            get => _standard;
+            set => Set(ref _standard, value);
+        }
 
-        public virtual SalaryDetail SalaryDetail { get; set; }
+        private decimal _addition;
+        public decimal Addition
+        {
+            get => _addition;
+            set => Set(ref _addition, value);
+        }
+        
+        private SalaryDetail _salaryDetail;
+        public SalaryDetail SalaryDetail
+        {
+            get => _salaryDetail;
+            set => Set(ref _salaryDetail, value);
+        
+        }
 
         public void CalculateAddition()
         {

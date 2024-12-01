@@ -15,8 +15,7 @@ namespace SalaryCalculator.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=data.db")
-                          .UseLazyLoadingProxies();
+            optionsBuilder.UseSqlite("Data Source=data.db");
             base.OnConfiguring(optionsBuilder);
         }
     }

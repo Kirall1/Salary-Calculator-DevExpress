@@ -6,6 +6,6 @@ namespace SalaryCalculator.Models
     {
         public int Rank { get; set; } //Разряд
         public decimal Coefficient { get; set; } //Коэффициент
-        public virtual IEnumerable<SalaryDetail> Details { get; set; }
+        public IEnumerable<SalaryDetail> Details { get; set; }
     }
 }

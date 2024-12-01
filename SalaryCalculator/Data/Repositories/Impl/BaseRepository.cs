@@ -24,12 +24,12 @@ namespace SalaryCalculator.Data.Repositories.Impl
             return addedModel;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             var entity = await _dbSet.Where(o => o.Id == id).FirstOrDefaultAsync();
 
@@ -44,7 +44,7 @@ namespace SalaryCalculator.Data.Repositories.Impl
 
         public virtual void Delete(TEntity entity)
         {
-            _dbSet.Remove(entity);
+            var e = _dbSet.Remove(entity);
             _context.SaveChanges();
         }
 

@@ -1,6 +1,8 @@
-﻿namespace SalaryCalculator.Models
+﻿using SalaryCalculator.ViewModels.Base;
+
+namespace SalaryCalculator.Models
 {
-    public class BaseModel
+    public abstract class BaseModel : ViewModel
     {
         public int Id { get; set; }
     }

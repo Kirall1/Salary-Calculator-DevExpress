@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows;
-using SalaryCalculator.ViewModels;
+using SalaryCalculator.Models;
 
 namespace SalaryCalculator.Infrastructure.TemplateSelectors
 {
@@ -9,9 +9,9 @@ namespace SalaryCalculator.Infrastructure.TemplateSelectors
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             FrameworkElement element = container as FrameworkElement;
-            if (item is SalaryDetailViewModel)
+            if (item is SalaryDetail)
                 return element.FindResource("SalaryEditTemplate") as DataTemplate;
-            if (item is AdditionToSalaryViewModel)
+            if (item is AdditionToSalary)
                 return element.FindResource("AdditionEditTemplate") as DataTemplate;
             return base.SelectTemplate(item, container);
         }

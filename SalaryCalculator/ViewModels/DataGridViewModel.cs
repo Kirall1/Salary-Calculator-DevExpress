@@ -9,6 +9,9 @@ using System.Windows.Input;
 using DevExpress.Mvvm.Xpf;
 using System.Windows.Forms;
 using SalaryCalculator.Properties;
+using DevExpress.XtraReports.UI;
+using DevExpress.Xpf.Printing;
+using System.Windows;
 
 namespace SalaryCalculator.ViewModels
 {
@@ -30,18 +33,32 @@ namespace SalaryCalculator.ViewModels
                     AddCommand = new AsyncCommand(AddSalaryDetail);
                     UpdateCommand = new DelegateCommand(UpdateSalaryDetail);
                     DeleteCommand = new DelegateCommand(DeleteSalaryDetail);
+                    Set(ref _selectedItem, value);
                 }
                 else if (value is AdditionToSalary additionToSalary)
                 {
                     AddCommand = new AsyncCommand(AddAdditionToSalary);
                     UpdateCommand = new DelegateCommand(UpdateAdditionToSalary);
                     DeleteCommand = new DelegateCommand(DeleteAdditionToSalary);
+                    Set(ref _selectedItem, value);
                 }
-                else return;
+                else if (SelectedAdditionSalaryDetail != null)
+                {
+                    AddCommand = new AsyncCommand(AddAdditionToSalary);
+                    UpdateCommand = new DelegateCommand(UpdateAdditionToSalary);
+                    DeleteCommand = new DelegateCommand(DeleteAdditionToSalary);
+                    Set(ref _selectedItem, new AdditionToSalary());
+                }
+                else
+                {
+                    AddCommand = new AsyncCommand(AddSalaryDetail);
+                    UpdateCommand = new DelegateCommand(UpdateSalaryDetail);
+                    DeleteCommand = new DelegateCommand(DeleteSalaryDetail);
+                    Set(ref _selectedItem, new SalaryDetail());
+                }
                 OnPropertyChanged(nameof(AddCommand));
                 OnPropertyChanged(nameof(UpdateCommand));
                 OnPropertyChanged(nameof(DeleteCommand));
-                Set(ref _selectedItem, value);
             }
         }
 
@@ -102,12 +119,23 @@ namespace SalaryCalculator.ViewModels
             }
         }
 
+        private SalaryDetail _selectedAditionSalaryDetail;
+        public SalaryDetail SelectedAdditionSalaryDetail
+        {
+            get => _selectedAditionSalaryDetail;
+            set
+            {
+                Set(ref _selectedAditionSalaryDetail, value);
+            }
+        }
+
         public ICommand LoadDataCommand { get; }
         public ICommand AddCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand<RowValidationArgs> UpdateSalaryDetailRowCommand { get; }
         public ICommand<RowValidationArgs> UpdateAdditionToSalaryRowCommand { get; }
+        public ICommand ShowPrintPreviewCommand { get; }
 
         #region constructor
         public DataGridViewModel(ISalaryDetailRepository salaryDetailRepository, IRankCoefficientRepository rankCoefficientRepository, IAdditionToSalaryRepository additionToSalaryRepository)
@@ -124,6 +152,7 @@ namespace SalaryCalculator.ViewModels
             DeleteCommand = new DelegateCommand(DeleteSalaryDetail);
             UpdateSalaryDetailRowCommand = new AsyncCommand<RowValidationArgs>(args => UpdateSalaryDetailByRow(args));
             UpdateAdditionToSalaryRowCommand = new DelegateCommand<RowValidationArgs>(args => UpdateAdditionToSalaryByRow(args));
+            ShowPrintPreviewCommand = new DelegateCommand(ShowPrintPreview);
             EditableSalaryDetail = new SalaryDetail();
             EditableAdditionToSalary = new AdditionToSalary();
 
@@ -194,11 +223,11 @@ namespace SalaryCalculator.ViewModels
         {
             if (args.Item == null) return;
             var item = args.Item as SalaryDetail;
-            item.RankCoefficient = _rankCoefficientRepository.GetByIdAsync(item.RankCoefficient.Id).Await();
             if(args.IsNewItem)
             {
-                SelectedSalaryDetail = await _salaryDetailRepository.AddAsync(item);
-                SalaryDetails.Add(SelectedSalaryDetail);
+                item.RecalculateAll();
+                await _salaryDetailRepository.AddAsync(item);
+                //SalaryDetails.Add(item);
             }
             else
             {
@@ -213,12 +242,12 @@ namespace SalaryCalculator.ViewModels
             }
         }
 
-        //Delete the selected line.
+        //Delete the selected salary detail
         private void DeleteSalaryDetail()
         {
             if (SelectedSalaryDetail != null)
             {
-                var confirmationResult = MessageBox.Show(
+                var confirmationResult = System.Windows.Forms.MessageBox.Show(
                     Resources.DeleteMessage,
                     Resources.ConfirmDeletion,
                     MessageBoxButtons.YesNo,
@@ -231,30 +260,42 @@ namespace SalaryCalculator.ViewModels
             }
         }
 
+        //Edit and add AditionToSalary through grid
         private void UpdateAdditionToSalaryByRow(RowValidationArgs args)
         {
             if (args.Item == null) return;
             var item = args.Item as AdditionToSalary;
-            var additionToSalary = _additionToSalaryRepository.GetByIdAsync(item.Id).Await();
-            additionToSalary.Standard = item.Standard;
-            additionToSalary.CalculateAddition();
-            _additionToSalaryRepository.Update(additionToSalary);
-            SelectedAdditionToSalary = additionToSalary;
+            if (args.IsNewItem)
+            {
+                item.SalaryDetail = SelectedAdditionSalaryDetail;
+                item.CalculateAddition();
+                SelectedAdditionToSalary = _additionToSalaryRepository.AddAsync(item).Await();
+            }
+            else
+            {
+                var additionToSalary = _additionToSalaryRepository.GetByIdAsync(item.Id).Await();
+                additionToSalary.Standard = item.Standard;
+                additionToSalary.CalculateAddition();
+                _additionToSalaryRepository.Update(additionToSalary);
+                SelectedAdditionToSalary = additionToSalary;
+            }
         }
-
+        //Add AdditionToSalary through input fields
         private async Task AddAdditionToSalary()
         {
-            if (SelectedAdditionToSalary == null) return;
+            if (SelectedAdditionSalaryDetail == null) return;
 
             var newAddition= new AdditionToSalary()
             {
-                Standard = EditableAdditionToSalary.Standard
+                Standard = EditableAdditionToSalary.Standard,
+                SalaryDetail = SelectedAdditionSalaryDetail
             };
             newAddition.CalculateAddition();
+            SelectedAdditionSalaryDetail.Additions.Add(newAddition);
             SelectedAdditionToSalary = await _additionToSalaryRepository.AddAsync(newAddition);
             
         }
-
+        //Edit AdditionToSalary through input fields
         private void UpdateAdditionToSalary()
         {
             if (EditableAdditionToSalary != null && SelectedAdditionToSalary != null)
@@ -265,14 +306,43 @@ namespace SalaryCalculator.ViewModels
             }
             
         }
-
+        //Delete selected AdditionToSalary selected salary detail
         private void DeleteAdditionToSalary()
         {
             if (SelectedAdditionToSalary != null)
             {
+                var confirmationResult = System.Windows.Forms.MessageBox.Show(
+                    Resources.DeleteMessage,
+                    Resources.ConfirmDeletion,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+                if (confirmationResult == DialogResult.No)
+                    return;
                 _additionToSalaryRepository.Delete(SelectedAdditionToSalary);
                 SelectedSalaryDetail = _salaryDetailRepository.GetByIdAsync(SelectedAdditionToSalary.Id).Await();
             }
+        }
+
+        //Show Dialog with Salary Report
+        public void ShowPrintPreview()
+        {
+            XtraReport report = new SalaryReport();
+            report.DataSource = SalaryDetails;
+
+            var previewControl = new DocumentPreviewControl
+            {
+                DocumentSource = report
+            };
+
+            report.CreateDocument();
+            var previewWindow = new Window
+            {
+                Title = Resources.Report,
+                Content = previewControl,
+                Width = 1200,
+                Height = 800
+            };
+            previewWindow.ShowDialog();
         }
     }
 }

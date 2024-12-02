@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Images" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Reporting.Core" Version="24.1.7" />
     <PackageReference Include="DevExpress.Wpf.Core" Version="24.1.7" />
     <PackageReference Include="devexpress.wpf.docking" Version="24.1.7" />
     <PackageReference Include="devexpress.wpf.grid.core" Version="24.1.7" />
     <PackageReference Include="devexpress.wpf.layoutcontrol" Version="24.1.7" />
+    <PackageReference Include="devexpress.wpf.printing" Version="24.1.7" />
     <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
@@ -48,5 +50,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+	
+<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File $(ProjectDir)RemoveFolders.ps1" />
+</Target>
 
 </Project>

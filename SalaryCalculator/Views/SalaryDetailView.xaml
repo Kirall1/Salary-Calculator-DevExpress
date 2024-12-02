@@ -2,12 +2,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-    xmlns:i="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
     xmlns:dxd="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     x:Class="SalaryCalculator.Views.SalaryDetailView"
     xmlns:ets="clr-namespace:SalaryCalculator.Infrastructure.TemplateSelectors"
-    xmlns:rs="clr-namespace:SalaryCalculator.Properties">
+    xmlns:rs="clr-namespace:SalaryCalculator.Properties" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core">
     <UserControl.Resources>
         <ets:EditTemplateSelector x:Key="TemplateSelector"/>
         <!-- Шаблон для редактирования строки зарплаты -->
@@ -89,12 +90,12 @@
             <dxg:GridControl.DetailDescriptor>
                 <dxg:DataControlDetailDescriptor ItemsSourceBinding="{Binding Additions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                  ParentPath="SalaryDetail">
-                    <dxg:GridControl CurrentItem="{Binding SelectedAdditionToSalary, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    <dxg:GridControl CurrentItem="{Binding SelectedAdditionToSalary, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     CurrentItemChanged="GridControl_CurrentItemChanged">
                         <dxg:GridControl.View>
                             <dxg:TableView AutoWidth="True"
                                            ShowUpdateRowButtons="OnCellEditorOpen"
                                            NewItemRowPosition="Bottom"
-                                           ValidateRow="TableView_ValidateRow"
                                            ValidateRowCommand="{Binding UpdateAdditionToSalaryRowCommand}">
                                 <dxg:TableView.UpdateRowButtonsTemplate>
                                     <DataTemplate>
@@ -115,7 +116,7 @@
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        
+
                         <dxg:GridColumn Binding="{Binding Addition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                         Header="{x:Static rs:Resources.AdditionToSalary}"
                                         AllowEditing="False">
@@ -172,7 +173,7 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
 
-            <dxg:GridColumn Binding="{Binding PremiumCoefficient}"
+            <dxg:GridColumn Binding="{Binding MonthlyBaseRate}"
                             Header="{x:Static rs:Resources.MonthlyBaseRate}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
@@ -204,7 +205,7 @@
             <Button Content="{x:Static rs:Resources.Add}" Command="{Binding AddCommand}" Width="200" Margin="5"/>
             <Button Content="{x:Static rs:Resources.Edit}" Command="{Binding UpdateCommand}" Width="200" Margin="5"/>
             <Button Content="{x:Static rs:Resources.Delete}" Command="{Binding DeleteCommand}" Width="200" Margin="5"/>
+            <Button Content="{x:Static rs:Resources.ShowReport}" Command="{Binding ShowPrintPreviewCommand}" Width="200" Margin="5"/>
         </StackPanel>
-
     </Grid>
 </UserControl>

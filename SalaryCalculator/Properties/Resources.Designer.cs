@@ -151,6 +151,15 @@ namespace SalaryCalculator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value must be an integer..
+        /// </summary>
+        public static string IntegerNumberMessage {
+            get {
+                return ResourceManager.GetString("IntegerNumberMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monthly base rate, BYN.
         /// </summary>
         public static string MonthlyBaseRate {
@@ -160,11 +169,38 @@ namespace SalaryCalculator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value must be a number.
+        /// </summary>
+        public static string NumberMessage {
+            get {
+                return ResourceManager.GetString("NumberMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Performer.
         /// </summary>
         public static string Performer {
             get {
                 return ResourceManager.GetString("Performer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The performer cannot be longer than 50 characters..
+        /// </summary>
+        public static string PerformerMaxLenMessage {
+            get {
+                return ResourceManager.GetString("PerformerMaxLenMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The performer is required.
+        /// </summary>
+        public static string PerformerRequirementMessage {
+            get {
+                return ResourceManager.GetString("PerformerRequirementMessage", resourceCulture);
             }
         }
         
@@ -187,6 +223,15 @@ namespace SalaryCalculator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report.
+        /// </summary>
+        public static string Report {
+            get {
+                return ResourceManager.GetString("Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Salary, BYN.
         /// </summary>
         public static string Salary {
@@ -205,6 +250,15 @@ namespace SalaryCalculator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show report.
+        /// </summary>
+        public static string ShowReport {
+            get {
+                return ResourceManager.GetString("ShowReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Standard.
         /// </summary>
         public static string Standard {
@@ -219,6 +273,24 @@ namespace SalaryCalculator.Properties {
         public static string TariffCoefficient {
             get {
                 return ResourceManager.GetString("TariffCoefficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        public static string To {
+            get {
+                return ResourceManager.GetString("To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value must be in the range from.
+        /// </summary>
+        public static string ValueScopeMessage {
+            get {
+                return ResourceManager.GetString("ValueScopeMessage", resourceCulture);
             }
         }
     }

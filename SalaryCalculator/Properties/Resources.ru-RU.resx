@@ -147,11 +147,23 @@
   <data name="HoursOfWorkPerDay" xml:space="preserve">
     <value>Количество часов работы в день</value>
   </data>
+  <data name="IntegerNumberMessage" xml:space="preserve">
+    <value>Значение должно быть целым числом</value>
+  </data>
   <data name="MonthlyBaseRate" xml:space="preserve">
     <value>Месячная базовая ставка, руб.</value>
   </data>
+  <data name="NumberMessage" xml:space="preserve">
+    <value>Значение должно быть числом</value>
+  </data>
   <data name="Performer" xml:space="preserve">
     <value>Исполнитель</value>
+  </data>
+  <data name="PerformerMaxLenMessage" xml:space="preserve">
+    <value>Исполнитель не может быть длиннее 50 символов</value>
+  </data>
+  <data name="PerformerRequirementMessage" xml:space="preserve">
+    <value>Исполнитель обязателен</value>
   </data>
   <data name="PremiumCoefficient" xml:space="preserve">
     <value>Коэффициент премий</value>
@@ -159,16 +171,28 @@
   <data name="Rank" xml:space="preserve">
     <value>Разряд</value>
   </data>
+  <data name="Report" xml:space="preserve">
+    <value>Отчет</value>
+  </data>
   <data name="Salary" xml:space="preserve">
     <value>Заработная плата, руб.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
+  <data name="ShowReport" xml:space="preserve">
+    <value>Отобразить отчет</value>
+  </data>
   <data name="Standard" xml:space="preserve">
     <value>Норматив</value>
   </data>
   <data name="TariffCoefficient" xml:space="preserve">
     <value>Тарифный коэффициент</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>до</value>
+  </data>
+  <data name="ValueScopeMessage" xml:space="preserve">
+    <value>Значение должно быть в диапазоне от</value>
   </data>
 </root>

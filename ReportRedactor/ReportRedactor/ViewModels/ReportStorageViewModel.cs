@@ -1,8 +1,6 @@
 ﻿using DevExpress.Xpf.Reports.UserDesigner;
-using DevExpress.XtraReports;
 using DevExpress.XtraReports.UI;
-using DevExpress.XtraRichEdit.Import.Html;
-using ReportRedactor.Models;
+using SalaryCalculator.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;

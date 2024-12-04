@@ -178,6 +178,15 @@ namespace SalaryCalculator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open report from file.
+        /// </summary>
+        public static string OpenReportFromFile {
+            get {
+                return ResourceManager.GetString("OpenReportFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Performer.
         /// </summary>
         public static string Performer {

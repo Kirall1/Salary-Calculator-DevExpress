@@ -12,6 +12,10 @@ using SalaryCalculator.Properties;
 using DevExpress.XtraReports.UI;
 using DevExpress.Xpf.Printing;
 using System.Windows;
+using DevExpress.DocumentServices.ServiceModel.DataContracts;
+using System.IO;
+using System;
+using DevExpress.XtraReports;
 
 namespace SalaryCalculator.ViewModels
 {
@@ -129,6 +133,18 @@ namespace SalaryCalculator.ViewModels
             }
         }
 
+        private string _isGridEditing;
+        public string IsFormActive
+        {
+            get => _isGridEditing;
+            set
+            {
+                Set(ref _isGridEditing, value);
+            }
+        }
+
+        public ICommand<RowEditStartedArgs> RowEditStartedCommand { get; }
+        public ICommand<RowEditFinishedArgs> RowEditFinishedCommand { get; }
         public ICommand LoadDataCommand { get; }
         public ICommand AddCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
@@ -136,6 +152,7 @@ namespace SalaryCalculator.ViewModels
         public ICommand<RowValidationArgs> UpdateSalaryDetailRowCommand { get; }
         public ICommand<RowValidationArgs> UpdateAdditionToSalaryRowCommand { get; }
         public ICommand ShowPrintPreviewCommand { get; }
+        public ICommand OpenReportFromFileCommand { get; }
 
         #region constructor
         public DataGridViewModel(ISalaryDetailRepository salaryDetailRepository, IRankCoefficientRepository rankCoefficientRepository, IAdditionToSalaryRepository additionToSalaryRepository)
@@ -153,9 +170,12 @@ namespace SalaryCalculator.ViewModels
             UpdateSalaryDetailRowCommand = new AsyncCommand<RowValidationArgs>(args => UpdateSalaryDetailByRow(args));
             UpdateAdditionToSalaryRowCommand = new DelegateCommand<RowValidationArgs>(args => UpdateAdditionToSalaryByRow(args));
             ShowPrintPreviewCommand = new DelegateCommand(ShowPrintPreview);
+            OpenReportFromFileCommand = new DelegateCommand(OpenReportFromFile);
+            RowEditStartedCommand = new DelegateCommand<RowEditStartedArgs>(args => RowEditStarted(args));
+            RowEditFinishedCommand = new DelegateCommand<RowEditFinishedArgs>(args => RowEditFinished(args));
             EditableSalaryDetail = new SalaryDetail();
             EditableAdditionToSalary = new AdditionToSalary();
-
+            IsFormActive = "True";
         }
         #endregion
 
@@ -342,7 +362,63 @@ namespace SalaryCalculator.ViewModels
                 Width = 1200,
                 Height = 800
             };
+            previewWindow.Owner = System.Windows.Application.Current.MainWindow;
+            previewWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             previewWindow.ShowDialog();
+        }
+
+        public void OpenReportFromFile()
+        {
+            DevExpress.Utils.DeserializationSettings.RegisterTrustedClass(typeof(ObservableCollection<SalaryDetail>));
+            DevExpress.Utils.DeserializationSettings.RegisterTrustedClass(typeof(SalaryDetail));
+
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Файлы макета отчетов (*.xml)|*.xml|Все файлы (*.*)|*.*",
+            };
+            openFileDialog.ShowDialog();
+            string filePath = openFileDialog.FileName;
+
+            var report = new XtraReport();
+            try
+            {
+                using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    report.LoadLayout(stream);
+                    report.DataSource = SalaryDetails;
+                }
+
+                var previewControl = new DocumentPreviewControl
+                {
+                    DocumentSource = report
+                };
+
+                report.CreateDocument();
+                var previewWindow = new Window
+                {
+                    Title = Resources.Report,
+                    Content = previewControl,
+                    Width = 1200,
+                    Height = 800
+                };
+                previewWindow.Owner = System.Windows.Application.Current.MainWindow;
+                previewWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                previewWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void RowEditFinished(RowEditFinishedArgs args)
+        {
+            IsFormActive = "True";
+        }
+
+        public void RowEditStarted(RowEditStartedArgs args)
+        {
+            IsFormActive = "False";
         }
     }
 }

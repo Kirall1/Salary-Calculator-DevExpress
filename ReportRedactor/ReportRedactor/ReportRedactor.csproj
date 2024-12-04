@@ -13,4 +13,26 @@
     <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.1.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="SalaryCalculator.Models">
+      <HintPath>SalaryCalculator.Models.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ru\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ru\DevExpress.Xpf.Grid.v24.1.Core.resources.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ru\DevExpress.Xpf.ReportDesigner.v24.1.resources.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ru\DevExpress.XtraReports.v24.1.resources.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

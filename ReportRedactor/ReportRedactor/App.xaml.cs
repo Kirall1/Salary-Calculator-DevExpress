@@ -1,9 +1,5 @@
 ﻿using DevExpress.Xpf.Core;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
+using System.Globalization;
 using System.Windows;
 
 namespace ReportRedactor
@@ -16,7 +12,9 @@ namespace ReportRedactor
         static App()
         {
             CompatibilitySettings.UseLightweightThemes = true;
-            DevExpress.Utils.Localization.XtraLocalizer.EnableTraceSource();
+            CultureInfo culture = new CultureInfo("ru-RU");
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
         }
     }
 }

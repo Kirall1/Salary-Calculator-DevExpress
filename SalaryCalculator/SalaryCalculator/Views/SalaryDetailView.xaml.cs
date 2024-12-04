@@ -5,6 +5,7 @@ using Res = SalaryCalculator.Properties.Resources;
 using SalaryCalculator.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
+using SalaryCalculator.Infrastructure;
 
 namespace SalaryCalculator.Views
 {
@@ -22,8 +23,7 @@ namespace SalaryCalculator.Views
 
         private void PerformerValidate(object sender, ValidationEventArgs e)
         {
-            if (e.Value == null) return;
-            if (e.Value.ToString().Length == 0)
+            if (e.Value == null || e.Value.ToString().Length == 0)
             {
                 e.IsValid = false;
                 e.ErrorContent = Res.PerformerRequirementMessage;
@@ -39,7 +39,12 @@ namespace SalaryCalculator.Views
 
         private void EffectiveWorkingTimeFundValidate(object sender, ValidationEventArgs e)
         {
-            if (e.Value == null) return;
+            if (e.Value == null)
+            {
+                e.IsValid = false;
+                e.ErrorContent = Res.IntegerNumberMessage;
+                return;
+            }
             if (int.TryParse(e.Value.ToString(), out int value))
             {
                 if (value < 0 || value > 30)
@@ -59,7 +64,12 @@ namespace SalaryCalculator.Views
 
         private void HoursOfWorkPerDayValidate(object sender, ValidationEventArgs e)
         {
-            if (e.Value == null) return; 
+            if (e.Value == null)
+            {
+                e.IsValid = false;
+                e.ErrorContent = Res.IntegerNumberMessage;
+                return;
+            }
             if (int.TryParse(e.Value.ToString(), out int value))
             {
                 if (value < 0 || value > 16)
@@ -79,7 +89,13 @@ namespace SalaryCalculator.Views
 
         private void StandardValidate(object sender, ValidationEventArgs e)
         {
-            if (e.Value == null || e.Value.ToString().Length == 0) return;
+            if (e.Value == null || e.Value.ToString().Length == 0)
+            {
+                e.IsValid = false;
+                e.ErrorContent = Res.NumberMessage;
+                return;
+            
+            }
             if (double.TryParse(e.Value.ToString(), out double value))
             {
                 if (value < 0 || value > 100)

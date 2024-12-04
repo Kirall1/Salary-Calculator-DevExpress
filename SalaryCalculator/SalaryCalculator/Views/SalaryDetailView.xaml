@@ -8,6 +8,7 @@
     xmlns:dxd="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     x:Class="SalaryCalculator.Views.SalaryDetailView"
     xmlns:ets="clr-namespace:SalaryCalculator.Infrastructure.TemplateSelectors"
+    xmlns:util="clr-namespace:SalaryCalculator.Infrastructure.Extensions"
     xmlns:rs="clr-namespace:SalaryCalculator.Properties" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core">
     <UserControl.Resources>
         <ets:EditTemplateSelector x:Key="TemplateSelector"/>
@@ -15,13 +16,13 @@
         <DataTemplate x:Key="SalaryEditTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="{x:Static rs:Resources.Performer}" Margin="0,0,5,0"/>
+                    <TextBlock Text="{util:Localization Performer}" Margin="0,0,5,0"/>
                     <dxe:TextEdit Text="{Binding DataContext.EditableSalaryDetail.Performer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                           Width="220"
                           Validate="PerformerValidate"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="{x:Static rs:Resources.Rank}" Margin="0,0,5,0"/>
+                    <TextBlock Text="{util:Localization Rank}" Margin="0,0,5,0"/>
                     <ComboBox ItemsSource="{Binding DataContext.RankCoefficients, RelativeSource={RelativeSource AncestorType=UserControl}}"
                       SelectedItem="{Binding DataContext.EditableSalaryDetail.RankCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
                       DisplayMemberPath="Rank"
@@ -29,13 +30,13 @@
                       IsEditable="False"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="{x:Static rs:Resources.HoursOfWorkPerDay}" Margin="0,0,5,0"/>
+                    <TextBlock Text="{util:Localization HoursOfWorkPerDay}" Margin="0,0,5,0"/>
                     <dxe:TextEdit Text="{Binding DataContext.EditableSalaryDetail.HoursOfWorkPerDay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                           Width="220"
                           Validate="HoursOfWorkPerDayValidate"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="{x:Static rs:Resources.EffectiveWorkingTimeFund}" Margin="0,0,5,0"/>
+                    <TextBlock Text="{util:Localization EffectiveWorkingTimeFund}" Margin="0,0,5,0"/>
                     <dxe:TextEdit Text="{Binding DataContext.EditableSalaryDetail.EffectiveWorkingTimeFund, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                           Width="240"
                           Validate="EffectiveWorkingTimeFundValidate"/>
@@ -47,7 +48,7 @@
         <DataTemplate x:Key="AdditionEditTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="{x:Static rs:Resources.Standard}" Margin="0,0,5,0"/>
+                    <TextBlock Text="{util:Localization Standard}" Margin="0,0,5,0"/>
                     <dxe:TextEdit Text="{Binding DataContext.EditableAdditionToSalary.Standard, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                           Width="200"
                           Validate="StandardValidate"/>
@@ -73,13 +74,15 @@
                 <dxg:TableView AutoWidth="True"
                                ShowUpdateRowButtons="OnCellEditorOpen"
                                NewItemRowPosition="Bottom"
-                               ValidateRowCommand="{Binding UpdateSalaryDetailRowCommand}">
+                               ValidateRowCommand="{Binding UpdateSalaryDetailRowCommand}"
+                               RowEditStartedCommand="{Binding RowEditStartedCommand}"
+                               RowEditFinishedCommand="{Binding RowEditFinishedCommand}">
                     <dxg:TableView.UpdateRowButtonsTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <Button Margin="0,0,6,0" Content="{x:Static rs:Resources.Save}" 
+                                <Button Margin="0,0,6,0" Content="{util:Localization Save}" 
                                     Command="{Binding View.Commands.UpdateRow}"/>
-                                <Button Content="{x:Static rs:Resources.Cancel}"
+                                <Button Content="{util:Localization Cancel}"
                                     Command="{Binding View.Commands.CancelRowChanges}"/>
                             </StackPanel>
                         </DataTemplate>
@@ -96,13 +99,15 @@
                             <dxg:TableView AutoWidth="True"
                                            ShowUpdateRowButtons="OnCellEditorOpen"
                                            NewItemRowPosition="Bottom"
-                                           ValidateRowCommand="{Binding UpdateAdditionToSalaryRowCommand}">
+                                           ValidateRowCommand="{Binding UpdateAdditionToSalaryRowCommand}"
+                                           RowEditStartedCommand="{Binding RowEditStartedCommand}"
+                                           RowEditFinishedCommand="{Binding RowEditFinishedCommand}">
                                 <dxg:TableView.UpdateRowButtonsTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                            <Button Margin="0,0,6,0" Content="{x:Static rs:Resources.Save}" 
+                                            <Button Margin="0,0,6,0" Content="{util:Localization Save}" 
                                     Command="{Binding View.Commands.UpdateRow}"/>
-                                            <Button Content="{x:Static rs:Resources.Cancel}"
+                                            <Button Content="{util:Localization Cancel}"
                                     Command="{Binding View.Commands.CancelRowChanges}"/>
                                         </StackPanel>
                                     </DataTemplate>
@@ -110,7 +115,7 @@
                             </dxg:TableView>
                         </dxg:GridControl.View>
                         <dxg:GridColumn Binding="{Binding Standard, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                        Header="{x:Static rs:Resources.Standard}"
+                                        Header="{util:Localization Standard}"
                                         Validate="StandardValidate">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
@@ -118,7 +123,7 @@
                         </dxg:GridColumn>
 
                         <dxg:GridColumn Binding="{Binding Addition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                        Header="{x:Static rs:Resources.AdditionToSalary}"
+                                        Header="{util:Localization AdditionToSalary}"
                                         AllowEditing="False">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
@@ -129,11 +134,11 @@
             </dxg:GridControl.DetailDescriptor>
 
             <dxg:GridColumn Binding="{Binding Performer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            Header="{x:Static rs:Resources.Performer}" 
+                            Header="{util:Localization Performer}" 
                             Validate="PerformerValidate"/>
 
             <dxg:GridColumn Binding="{Binding RankCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                            Header="{x:Static rs:Resources.Rank}">
+                            Header="{util:Localization Rank}">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings ItemsSource="{Binding RankCoefficients}" 
                                               DisplayMember="Rank"
@@ -142,7 +147,7 @@
             </dxg:GridColumn>
 
             <dxg:GridColumn Binding="{Binding HoursOfWorkPerDay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                            Header="{x:Static rs:Resources.HoursOfWorkPerDay}"
+                            Header="{util:Localization HoursOfWorkPerDay}"
                             Validate="HoursOfWorkPerDayValidate">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Left" />
@@ -150,7 +155,7 @@
             </dxg:GridColumn>
 
             <dxg:GridColumn Binding="{Binding EffectiveWorkingTimeFund, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                            Header="{x:Static rs:Resources.EffectiveWorkingTimeFund}"
+                            Header="{util:Localization EffectiveWorkingTimeFund}"
                             Validate="EffectiveWorkingTimeFundValidate">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Left" />
@@ -158,7 +163,7 @@
             </dxg:GridColumn>
 
             <dxg:GridColumn Binding="{Binding RankCoefficient.Coefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                            Header="{x:Static rs:Resources.TariffCoefficient}"
+                            Header="{util:Localization TariffCoefficient}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
@@ -166,7 +171,7 @@
             </dxg:GridColumn>
 
             <dxg:GridColumn Binding="{Binding PremiumCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            Header="{x:Static rs:Resources.PremiumCoefficient}"
+                            Header="{util:Localization PremiumCoefficient}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
@@ -174,7 +179,7 @@
             </dxg:GridColumn>
 
             <dxg:GridColumn Binding="{Binding MonthlyBaseRate}"
-                            Header="{x:Static rs:Resources.MonthlyBaseRate}"
+                            Header="{util:Localization MonthlyBaseRate}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
@@ -182,7 +187,7 @@
             </dxg:GridColumn>
 
             <dxg:GridColumn Binding="{Binding HourBaseRate}"
-                            Header="{x:Static rs:Resources.HourBaseRate}"
+                            Header="{util:Localization HourBaseRate}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
@@ -190,7 +195,7 @@
             </dxg:GridColumn>
 
             <dxg:GridColumn Binding="{Binding Salary}"
-                            Header="{x:Static rs:Resources.Salary}"
+                            Header="{util:Localization Salary}"
                     AllowEditing="False">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Left" />
@@ -199,13 +204,15 @@
         </dxg:GridControl>
 
         <ContentControl Grid.Row="1" ContentTemplateSelector="{StaticResource TemplateSelector}" 
-                                     Content="{Binding SelectedItem}" />
+                                     Content="{Binding SelectedItem}"
+                                     IsHitTestVisible="{Binding IsFormActive}"/>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="{x:Static rs:Resources.Add}" Command="{Binding AddCommand}" Width="200" Margin="5"/>
-            <Button Content="{x:Static rs:Resources.Edit}" Command="{Binding UpdateCommand}" Width="200" Margin="5"/>
-            <Button Content="{x:Static rs:Resources.Delete}" Command="{Binding DeleteCommand}" Width="200" Margin="5"/>
-            <Button Content="{x:Static rs:Resources.ShowReport}" Command="{Binding ShowPrintPreviewCommand}" Width="200" Margin="5"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" IsHitTestVisible="{Binding IsFormActive}">
+            <Button Content="{util:Localization Add}" Command="{Binding AddCommand}" Width="200" Margin="5"/>
+            <Button Content="{util:Localization Edit}" Command="{Binding UpdateCommand}" Width="200" Margin="5"/>
+            <Button Content="{util:Localization Delete}" Command="{Binding DeleteCommand}" Width="200" Margin="5"/>
+            <Button Content="{util:Localization ShowReport}" Command="{Binding ShowPrintPreviewCommand}" Width="200" Margin="5"/>
+            <Button Content="{util:Localization OpenReportFromFile}" Command="{Binding OpenReportFromFileCommand}" Width="200" Margin="5"/>
         </StackPanel>
     </Grid>
 </UserControl>

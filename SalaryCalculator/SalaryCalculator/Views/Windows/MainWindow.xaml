@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:vm="clr-namespace:SalaryCalculator.ViewModels"
-    Title="MainWindow" Height="700" Width="1400" MinHeight="700" MinWidth="1400">
+    Title="MainWindow" Height="700" Width="1400" MinHeight="700" MinWidth="1400"
+    WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30px"/>

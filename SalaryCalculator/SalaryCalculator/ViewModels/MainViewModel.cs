@@ -1,13 +1,11 @@
 ﻿using DevExpress.Mvvm;
+using SalaryCalculator.Infrastructure;
 using SalaryCalculator.ViewModels.Base;
 using SalaryCalculator.Views;
-using System;
 using System.Globalization;
 using System.Threading;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Markup;
 
 namespace SalaryCalculator.ViewModels
 {
@@ -36,9 +34,7 @@ namespace SalaryCalculator.ViewModels
             var culture = new CultureInfo(cultureCode);
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
-
-            CurrentView = new SalaryDetailView((CurrentView.DataContext as DataGridViewModel));
-
+            TranslationSource.Instance.CurrentCulture = culture;
         }
     }
 }

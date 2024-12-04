@@ -156,6 +156,9 @@
   <data name="NumberMessage" xml:space="preserve">
     <value>The value must be a number</value>
   </data>
+  <data name="OpenReportFromFile" xml:space="preserve">
+    <value>Open report from file</value>
+  </data>
   <data name="Performer" xml:space="preserve">
     <value>Performer</value>
   </data>

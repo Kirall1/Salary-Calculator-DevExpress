@@ -1,0 +1,73 @@
+﻿<dx:ThemedWindow 
+    x:Class="XLabFileReader.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    Title="MainWindow" Height="800" Width="1000"
+    WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <!-- Для списка -->
+                <ColumnDefinition Width="3*"/>
+                <!-- Для формы -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Список FileTitle -->
+            <ListBox x:Name="FilesList"
+                 ItemsSource="{Binding Files}"
+                 SelectedItem="{Binding SelectedFile}"
+                 DisplayMemberPath="FileTitle"
+                 Grid.Column="0"
+                 Margin="10"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"/>
+
+            <!-- Форма редактирования -->
+            <Grid Grid.Column="1" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Название файла:"
+                       FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding SelectedFile.FileTitle, UpdateSourceTrigger=PropertyChanged}"
+                     Grid.Row="0" Margin="0,20,0,10"/>
+
+                <TextBlock Text="Имя файла:"
+                       FontWeight="Bold" Margin="0,0,0,5" Grid.Row="1"/>
+                <TextBox Text="{Binding SelectedFile.FileName, UpdateSourceTrigger=PropertyChanged}"
+                     Grid.Row="1" Margin="0,20,0,10" IsReadOnly="True"/>
+
+                <TextBlock Text="Данные файла (Base64):"
+                       FontWeight="Bold" Margin="0,0,0,5" Grid.Row="2"/>
+                <TextBox Text="{Binding SelectedFile.FileData, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     IsReadOnly="True"
+                     VerticalScrollBarVisibility="Visible"
+                     Height="Auto"
+                     Margin="0,20,0,10"
+                     Grid.Row="2"/>
+
+                <!-- Кнопки управления -->
+                <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Center" Margin="10">
+                    <Button Content="Загрузить"
+                        Command="{Binding LoadFileCommand}"
+                        Margin="5"/>
+                    <Button Content="Сохранить"
+                        Command="{Binding SaveFileCommand}"
+                        Margin="5"/>
+                    <Button Content="Удалить"
+                        Command="{Binding DeleteFileCommand}"
+                        Margin="5"/>
+                    <Button Content="Выбрать файл" Command="{Binding SelectFileCommand}" Margin="5"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <dx:WaitIndicator DeferedVisibility="{Binding IsBusy}" Content="Загрузка..."/>
+    </Grid>
+</dx:ThemedWindow>

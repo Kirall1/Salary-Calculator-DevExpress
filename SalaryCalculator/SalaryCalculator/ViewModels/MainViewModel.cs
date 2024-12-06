@@ -35,6 +35,7 @@ namespace SalaryCalculator.ViewModels
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
             TranslationSource.Instance.CurrentCulture = culture;
+            DevExpress.Xpf.Core.ApplicationThemeHelper.UpdateApplicationThemeName();
         }
     }
 }

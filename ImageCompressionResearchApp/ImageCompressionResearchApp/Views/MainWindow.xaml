@@ -1,0 +1,61 @@
+﻿<dx:ThemedWindow xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
+    x:Class="ImageCompressionResearchApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    Title="MainWindow" Height="800" Width="1500"
+    WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10">
+            <Label Content="Процент сжатия:" Margin="5"/>
+            <dxe:TextEdit Width="150" Text="{Binding CompressionPercentage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                          Validate="TextEdit_Validate"
+                          Margin="5"/>
+            <Button Width="150" Content="Сжать (OpenCV)" Command="{Binding CompressWithOpenCvCommand}" Margin="5" />
+            <Button Width="150" Content="Сжать (Magick.NET)" Command="{Binding CompressWithMagickCommand}" Margin="5" />
+            <Button Width="150" Content="Сжать (SkiaSharp)" Command="{Binding CompressWithSkiaSharpCommand}" Margin="5" />
+            <Button Width="150" Content="Сжать (ImageSharp)" Command="{Binding CompressWithImageSharpCommand}" Margin="5" />
+            <Button Width="150" Content="Загрузить изображение" Command="{Binding SelectImageCommand}" Margin="5" />
+
+        </StackPanel>
+
+        <GroupBox Header="Оригинальные изображения" Grid.Row="0" Margin="10">
+            <ListView ItemsSource="{Binding OriginalImages}" SelectedItem="{Binding SelectedImage}" MouseDoubleClick="OriginalImageslListView_MouseDoubleClick">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FileName}" />
+                        <GridViewColumn Header="Ширина" DisplayMemberBinding="{Binding Width}" />
+                        <GridViewColumn Header="Высота" DisplayMemberBinding="{Binding Height}" />
+                        <GridViewColumn Header="Размер (КБ)" DisplayMemberBinding="{Binding FileSizeKb}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
+
+
+        <GroupBox Header="Сжатые изображения" Grid.Row="1" Margin="10">
+            <ListView ItemsSource="{Binding CompressedImages}" MouseDoubleClick="CompressedImageslListView_MouseDoubleClick">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FileName}" />
+                        <GridViewColumn Header="Ширина" DisplayMemberBinding="{Binding Width}" />
+                        <GridViewColumn Header="Высота" DisplayMemberBinding="{Binding Height}" />
+                        <GridViewColumn Header="Размер (КБ)" DisplayMemberBinding="{Binding FileSizeKb}" />
+                        <GridViewColumn Header="PSNR" DisplayMemberBinding="{Binding Psnr}" />
+                        <GridViewColumn Header="Время сжатия, мс" DisplayMemberBinding="{Binding TimeOfWorkMs}" />
+                        <GridViewColumn Header="Пиковая нагрузка на ЦП, %" DisplayMemberBinding="{Binding CpuUsage}" />
+                        <GridViewColumn Header="Потребление памяти, кб" DisplayMemberBinding="{Binding MemoryUsageKb}" />
+                        
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
+    </Grid>
+</dx:ThemedWindow>

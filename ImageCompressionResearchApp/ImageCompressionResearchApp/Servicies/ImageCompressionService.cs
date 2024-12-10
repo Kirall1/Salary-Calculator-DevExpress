@@ -11,6 +11,7 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Tiff;
 using SixLabors.ImageSharp.Compression.Zlib;
 using System.Diagnostics;
+using ImageCompressionResearchApp.Servicies;
 
 namespace ImageCompressionResearchApp.Services
 {
@@ -36,7 +37,9 @@ namespace ImageCompressionResearchApp.Services
                 case ".webp":
                     perfomanceMetrcis = MeasurePerformance(() => Cv2.ImWrite(outputPath, mat, new ImageEncodingParam(ImwriteFlags.WebPQuality, 100 - compressionPercentage)));
                     break;
-                default: throw new Exception("Неподдерживаемый формат изображения");
+                default:
+                    LogService.WriteLog(EventLogEntryType.Error, "IC", "AP", "00", "ImageCompressionService", "Unsupported image format");
+                    throw new Exception("Неподдерживаемый формат изображения");
             }
 
             var newSize = new FileInfo(outputPath).Length / 1024.0;
@@ -56,9 +59,12 @@ namespace ImageCompressionResearchApp.Services
 
         public static ImageModel CompressWithMagick(ImageModel image, int compressionPercentage, string outputFolder)
         {
-            if (image.Extension != ".jpg" && image.Extension != ".jpeg" && 
+            if (image.Extension != ".jpg" && image.Extension != ".jpeg" &&
                 image.Extension != ".png" && image.Extension != ".miff")
+            {
+                LogService.WriteLog(EventLogEntryType.Error, "IC", "AP", "00", "ImageCompressionService", "Unsupported image format");
                 throw new Exception("Неподдерживаемый формат изображения");
+            }
             string newFileName = GenerateFileName(image.FileName, "Magick", compressionPercentage);
             string outputPath = Path.Combine(outputFolder, newFileName);
 
@@ -142,7 +148,9 @@ namespace ImageCompressionResearchApp.Services
                     case ".avif":
                         perfomanceMetrcis = MeasurePerformance(() => skImage.Encode(SKEncodedImageFormat.Avif, 100 - compressionPercentage).SaveTo(output));
                         break;
-                    default: throw new Exception("Неподдерживаемый формат изображения");
+                    default:
+                        LogService.WriteLog(EventLogEntryType.Error, "IC", "AP", "00", "ImageCompressionService", "Unsupported image format");
+                        throw new Exception("Неподдерживаемый формат изображения");
                 }
             }
 
@@ -191,7 +199,9 @@ namespace ImageCompressionResearchApp.Services
                     case ".tiff":
                         perfomanceMetrcis = MeasurePerformance(() => img.SaveAsTiff(outputPath, new TiffEncoder { CompressionLevel = (DeflateCompressionLevel)(compressionPercentage / 10) }));
                         break;
-                    default: throw new Exception("Неподдерживаемый формат изображения");
+                    default:
+                        LogService.WriteLog(EventLogEntryType.Error, "IC", "AP", "00", "ImageCompressionService", "Unsupported image format");
+                        throw new Exception("Неподдерживаемый формат изображения");
                 }
             }
 

@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm;
 using ImageCompressionResearchApp.Models;
 using ImageCompressionResearchApp.Services;
+using ImageCompressionResearchApp.Servicies;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -110,6 +111,7 @@ public class MainViewModel : ViewModel
             }
             catch (Exception ex)
             {
+                LogService.WriteLog(EventLogEntryType.Error, "MV", "AP", "00", "MainViewModel", ex.Message);
                 MessageBox.Show($"Ошибка при копировании файла: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -142,6 +144,7 @@ public class MainViewModel : ViewModel
         }
         catch (Exception ex)
         {
+            LogService.WriteLog(EventLogEntryType.Error, "MV", "AP", "01", "MainViewModel", ex.Message);
             MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
@@ -184,9 +187,9 @@ public class MainViewModel : ViewModel
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Игнорируем ошибки загрузки
+                LogService.WriteLog(EventLogEntryType.Warning, "MV", "AP", "03", "MainViewModel", ex.Message);
             }
         }
     }
@@ -201,6 +204,7 @@ public class MainViewModel : ViewModel
         }
         catch (Exception ex)
         {
+            LogService.WriteLog(EventLogEntryType.Error, "MV", "AP", "04", "MainViewModel", ex.Message);
             MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
@@ -225,6 +229,7 @@ public class MainViewModel : ViewModel
         }
         catch (Exception ex)
         {
+            LogService.WriteLog(EventLogEntryType.Error, "MV", "AP", "05", "MainViewModel", ex.Message);
             MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
